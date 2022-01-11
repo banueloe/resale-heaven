@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+
 export default function handler(req, res) {
   if (req.method === "GET") {
     //This route is for initial eBay notificaton validation
@@ -15,8 +16,9 @@ export default function handler(req, res) {
   } else if (req.method === "POST") {
     //This route handles ongoing (incoming) notifications
     console.log(req.body);
+    //TODO handle account deletions
     res.status(200).json({ message: "Notication received: User account data deleted" });
   } else {
-    res.status(405).json({ error: "This endpoint only accepts GET requests" });
+    res.status(405).json({ error: "This endpoint only accepts GET and POST requests" });
   }
 }

@@ -1,61 +1,63 @@
-import Head from 'next/head'
-import clientPromise from '../lib/mongodb'
+import Head from "next/head";
+import clientPromise from "../lib/mongodb";
+import { Button } from "@mui/material";
 
-export default function Home({ isConnected }) {
+export async function getServerSideProps(context) {
+  const RUName = process.env.EBAY_RUNAME;
+  console.log(RUName)
+  try {
+    // client.db() will be the default database passed in the MONGODB_URI
+    // You can change the database by calling the client.db() function and specifying a database like:
+    // const db = client.db("myDatabase");
+    // Then you can execute queries against your database like so:
+    // db.find({}) or any of the MongoDB Node Driver commands
+    const client = await clientPromise;
+    const db = client.db();
+    // const collection= db.collection('email');
+
+    // await collection.insertOne({email: "johndoe@gmail.com"});
+
+    return {
+      props: { isConnected: true },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: { isConnected: false, RUName:RUName },
+    };
+  }
+}
+
+export default function LandingPage({ isConnected, RUName }) {
+  console.log(RUName)
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Resale Heaven</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">RESALE HEAVEN</a>
-        </h1>
+        <h1 className="title">Welcome to Resale Heaven</h1>
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            const link = `https://auth.ebay.com/oauth2/authorize?client_id=ErnestoB-resalehe-PRD-ca0e5e2a1-7048ac66&redirect_uri=Ernesto_Banuelo-ErnestoB-resale-oycbeqs&response_type=code&scope=https%3A%2F%2Fapi.ebay.com%2Foauth%2Fapi_scope%2Fsell.inventory`; //todo get RUNAme from env variables, increase scope as app grows
+            window.open(link);
+          }}
+        >
+          Sign In
+        </Button>
 
         {isConnected ? (
           <h2 className="subtitle">You are connected to MongoDB</h2>
         ) : (
           <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
+            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
             for instructions.
           </h2>
         )}
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
       <footer>
@@ -64,7 +66,7 @@ export default function Home({ isConnected }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
@@ -219,30 +221,6 @@ export default function Home({ isConnected }) {
         }
       `}</style>
     </div>
-  )
+  );
 }
 
-export async function getServerSideProps(context) {
-  try {
-    // client.db() will be the default database passed in the MONGODB_URI
-    // You can change the database by calling the client.db() function and specifying a database like:
-    // const db = client.db("myDatabase");
-    // Then you can execute queries against your database like so:
-    // db.find({}) or any of the MongoDB Node Driver commands
-    const client = await clientPromise;
-    const db = client.db();
-    const collection= db.collection('email');
-    
-    await collection.insertOne({email: "johndoe@gmail.com"});
-
-    
-    return {
-      props: { isConnected: true },
-    }
-  } catch (e) {
-    console.error(e)
-    return {
-      props: { isConnected: false },
-    }
-  }
-}
