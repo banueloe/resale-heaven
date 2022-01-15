@@ -1,10 +1,26 @@
 import Head from "next/head";
 import clientPromise from "../lib/mongodb";
 import { Button } from "@mui/material";
+const EbayAuthToken = require("ebay-oauth-nodejs-client");
+
+const scopes = [
+  "https://api.ebay.com/oauth/api_scope",
+  "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
+  "https://api.ebay.com/oauth/api_scope/sell.inventory",
+];
 
 export async function getServerSideProps(context) {
-  const RUName = process.env.EBAY_RUNAME;
-  console.log(RUName)
+  const ebayAuthToken = new EbayAuthToken({
+    clientId: process.env.EBAY_APP_ID,
+    clientSecret: process.env.EBAY_CERT_ID,
+    redirectUri: process.env.EBAY_RUNAME,
+  });
+
+  const authLink = ebayAuthToken.generateUserAuthorizationUrl(
+    "PRODUCTION",
+    scopes
+  );
+
   try {
     // client.db() will be the default database passed in the MONGODB_URI
     // You can change the database by calling the client.db() function and specifying a database like:
@@ -18,18 +34,17 @@ export async function getServerSideProps(context) {
     // await collection.insertOne({email: "johndoe@gmail.com"});
 
     return {
-      props: { isConnected: true },
+      props: { isConnected: true, authLink: authLink },
     };
   } catch (e) {
     console.error(e);
     return {
-      props: { isConnected: false, RUName:RUName },
+      props: { isConnected: false, authLink: authLink },
     };
   }
 }
 
-export default function LandingPage({ isConnected, RUName }) {
-  console.log(RUName)
+export default function LandingPage({ isConnected, authLink }) {
   return (
     <div className="container">
       <Head>
@@ -43,8 +58,7 @@ export default function LandingPage({ isConnected, RUName }) {
         <Button
           variant="contained"
           onClick={() => {
-            const link = `https://auth.ebay.com/oauth2/authorize?client_id=ErnestoB-resalehe-PRD-ca0e5e2a1-7048ac66&redirect_uri=Ernesto_Banuelo-ErnestoB-resale-oycbeqs&response_type=code&scope=https%3A%2F%2Fapi.ebay.com%2Foauth%2Fapi_scope%2Fsell.inventory`; //todo get RUNAme from env variables, increase scope as app grows
-            window.open(link);
+            window.open(authLink);
           }}
         >
           Sign In
@@ -223,4 +237,3 @@ export default function LandingPage({ isConnected, RUName }) {
     </div>
   );
 }
-
