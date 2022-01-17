@@ -12,7 +12,7 @@ export async function getServerSideProps(context) {
   ebayAuthToken
     .exchangeCodeForAccessToken("PRODUCTION", context.query.code)
     .then((data) => {
-      console.log(data);
+      console.log("data is ", data);
     })
     .catch((error) => {
       console.log(`Error to get Access token :${JSON.stringify(error)}`);
