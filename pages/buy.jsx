@@ -10,10 +10,6 @@ import {
 } from "../lib/helpers";
 import BuyDistribution from "../components/charts/buy-distribution";
 
-export async function getServerSideProps() {
-  return { props: {} };
-}
-
 const Buy = () => {
   const [activeItems, setActiveItems] = useState();
   let itemPrices;
