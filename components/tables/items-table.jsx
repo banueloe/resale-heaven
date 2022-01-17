@@ -4,8 +4,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TableContainer
+  TableContainer,
 } from "@mui/material";
+import { getPriceWithShipping, formatMoney } from "../../lib/helpers";
 
 const ItemsTable = ({ items }) => {
   return (
@@ -13,10 +14,11 @@ const ItemsTable = ({ items }) => {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell>Image</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Price</TableCell>
+            <TableCell>Price (W/Shipping)</TableCell>
             <TableCell>URL</TableCell>
-            <TableCell>CONDITION</TableCell>
+            <TableCell>Condition</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -24,16 +26,17 @@ const ItemsTable = ({ items }) => {
             <TableRow key={item.itemId}>
               <TableCell align="left" component="th" scope="row">
                 <img src={item.galleryURL} />
-                {item.title}
               </TableCell>
+              <TableCell align="left"><a href={item.viewItemURL[0]}>{item.title}</a></TableCell>
               <TableCell align="right">
-                {item.sellingStatus[0].currentPrice[0].__value__}
+                {formatMoney(getPriceWithShipping(item))}
               </TableCell>
               <TableCell align="center">
-                {" "}
                 <a href={item.viewItemURL[0]}>{item.viewItemURL}</a>
               </TableCell>
-              <TableCell align="left">{item.condition[0].conditionDisplayName}</TableCell>
+              <TableCell align="left">
+                {item.condition[0].conditionDisplayName}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
