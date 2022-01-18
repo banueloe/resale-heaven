@@ -17,7 +17,6 @@ const ItemsTable = ({ items }) => {
             <TableCell>Image</TableCell>
             <TableCell>Title</TableCell>
             <TableCell>Price (W/Shipping)</TableCell>
-            <TableCell>URL</TableCell>
             <TableCell>Condition</TableCell>
           </TableRow>
         </TableHead>
@@ -30,9 +29,6 @@ const ItemsTable = ({ items }) => {
               <TableCell align="left"><a href={item.viewItemURL[0]}>{item.title}</a></TableCell>
               <TableCell align="right">
                 {formatMoney(getPriceWithShipping(item))}
-              </TableCell>
-              <TableCell align="center">
-                <a href={item.viewItemURL[0]}>{item.viewItemURL}</a>
               </TableCell>
               <TableCell align="left">
                 {item.condition[0].conditionDisplayName}
