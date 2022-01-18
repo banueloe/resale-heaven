@@ -18,9 +18,15 @@ const Buy = () => {
   }
 
   return (
-    <Grid container spacing={4} alignItems="center" justify="center" direction="column">
+    <Grid
+      container
+      spacing={4}
+      alignItems="center"
+      justify="center"
+      direction="column"
+    >
       <Grid item>
-        <h1 className="title">Should you buy?</h1>
+        <h1 className="title">How much is this item worth?</h1>
         <h3>
           Use this page to determine whether or not you should buy an item to
           resale. Remember, the prices shown below are current or historical
@@ -36,9 +42,13 @@ const Buy = () => {
             Average price = {formatMoney(getAverage(itemPrices))}
           </Grid>
           <Grid item>Median price = {formatMoney(getMedian(itemPrices))}</Grid>
-          <Grid item>
-            <BuyDistribution items={itemPrices} />
-          </Grid>
+          {activeItems.length > 6 ? (
+            <Grid item>
+              <BuyDistribution items={itemPrices} />
+            </Grid>
+          ) : (
+            <div>Not enough comparable items to accurately determine item worth.</div>
+          )}
           <Grid item>
             <ItemsTable items={activeItems} />
           </Grid>
