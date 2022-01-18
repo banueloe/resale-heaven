@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Grid, Button } from "@mui/material";
-import { getInventoryItems } from "../lib/server-side/inventory-items";
-import InventoryTable from "../components/tables/inventory-table";
+import { getInventoryItems } from "../../lib/server-side/inventory-items";
+import InventoryTable from "../../components/tables/inventory-table";
 
 export async function getServerSideProps() {
   const currentItems = await getInventoryItems();
@@ -23,10 +23,10 @@ const Inventory = ({ currentLocations, currentItems }) => {
         </h3>
       </Grid>
       <Grid item>
-        <Button variant="contained">Create New Inventory Item</Button>
+        <Button variant="contained">Create New Inventory Location</Button>
       </Grid>
       <Grid item>
-        <Button variant="contained">Create New Inventory Location</Button>
+        <Button variant="contained">Create New Inventory Item</Button>
       </Grid>
       <Grid item>
         <InventoryTable inventoryItems={inventoryItems}/>
