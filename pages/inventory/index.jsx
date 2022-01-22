@@ -3,7 +3,7 @@ import { getInventoryItems } from "../../lib/server-side/inventory-items";
 import InventoryTable from "../../components/tables/inventory-table";
 
 import { withIronSessionSsr } from "iron-session/next";
-import { sessionOptions } from "../lib/session";
+import { sessionOptions } from "../../lib/session";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
