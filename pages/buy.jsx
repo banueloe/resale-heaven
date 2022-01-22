@@ -38,6 +38,7 @@ const Buy = () => {
       </Grid>
       {activeItems && (
         <div>
+          <Grid item>Results found = {itemPrices.length}</Grid>
           <Grid item>
             Average price = {formatMoney(getAverage(itemPrices))}
           </Grid>
