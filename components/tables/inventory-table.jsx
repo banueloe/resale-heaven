@@ -8,7 +8,8 @@ import TableRow from '@mui/material/TableRow';
 export default function InventoryTable({inventoryItems}) {
   return (
     <TableContainer>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <h2>Inventory</h2>
+      <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             <TableCell>Title</TableCell>
