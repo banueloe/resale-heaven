@@ -1,4 +1,3 @@
-import clientPromise from "../lib/mongodb";
 import { Button, Grid } from "@mui/material";
 import Image from "next/image";
 import BookSale from "../public/booksale.jpg";
@@ -22,35 +21,23 @@ export async function getServerSideProps(context) {
     "PRODUCTION",
     scopes
   );
-
-  try {
-    // client.db() will be the default database passed in the MONGODB_URI
-    // You can change the database by calling the client.db() function and specifying a database like:
-    // const db = client.db("myDatabase");
-    // Then you can execute queries against your database like so:
-    // db.find({}) or any of the MongoDB Node Driver commands
-    const client = await clientPromise;
-    const db = client.db();
-    // const collection= db.collection('email');
-
-    // await collection.insertOne({email: "johndoe@gmail.com"});
-
-    return {
-      props: { isConnected: true, authLink: authLink },
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      props: { isConnected: false, authLink: authLink },
-    };
-  }
+  return {
+    props: { authLink: authLink },
+  };
 }
 
-export default function LandingPage({ isConnected, authLink }) {
+export default function LandingPage({ authLink }) {
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Image src={BookSale} alt="Picture of the author" priority={true} layout="responsive" height="100" width="100" />
+        <Image
+          src={BookSale}
+          alt="Picture of the author"
+          priority={true}
+          layout="responsive"
+          height="100"
+          width="100"
+        />
       </Grid>
       <Grid item xs={6}>
         <main>
@@ -64,15 +51,6 @@ export default function LandingPage({ isConnected, authLink }) {
           >
             Sign In
           </Button>
-
-          {isConnected ? (
-            <h2 className="subtitle">You are connected to MongoDB</h2>
-          ) : (
-            <h2 className="subtitle">
-              You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
-              for instructions.
-            </h2>
-          )}
         </main>
 
         <style jsx>{`
