@@ -13,6 +13,7 @@ const MediaCard = ({title, description, image }) => {
         <Image
           src={image}
           alt="Category image"
+          priority={true}
           layout="responsive"
           height="400"
           width="400"

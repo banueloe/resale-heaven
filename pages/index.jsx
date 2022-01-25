@@ -50,7 +50,7 @@ export default function LandingPage({ isConnected, authLink }) {
   return (
     <Grid container>
       <Grid item xs={6}>
-        <Image src={BookSale} alt="Picture of the author" layout="responsive" height="100" width="100" />
+        <Image src={BookSale} alt="Picture of the author" priority={true} layout="responsive" height="100" width="100" />
       </Grid>
       <Grid item xs={6}>
         <main>
