@@ -5,13 +5,14 @@ import ControlledTextInput from "./controlled-text-field";
 import ConditionSelector from "../select/condition-selector";
 
 const ItemsForm = () => {
-  const [SKU, setSKU] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [SKU, setSKU] = useState();
+  const [name, setName] = useState();
+  const [description, setDescription] = useState();
   const [quantity, setQuantity] = useState();
   const [condition, setCondition] = useState();
+  const [brand, setBrand] = useState();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,6 +29,7 @@ const ItemsForm = () => {
     }
   };
 
+  //TODO support image upload
   return (
     <form onSubmit={handleSubmit}>
       <ControlledTextInput
@@ -41,10 +43,12 @@ const ItemsForm = () => {
         setValue={setName}
         label="Inventory Item Name"
       />
+      <ControlledTextInput value={brand} setValue={setBrand} label="Brand" />
       <ControlledTextInput
         value={description}
         setValue={setDescription}
-        label="Description"
+        label="Description: Basic HTML tags are supported"
+        multiline={true}
       />
       <ConditionSelector condition={condition} setCondition={setCondition} />
       <Grid item mt={2}>
