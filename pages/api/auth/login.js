@@ -20,7 +20,6 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
             token: dataObject.access_token,
           };
           await req.session.save().then(() => {
-            console.log("this is a test123");
             res.redirect("/home");
           });
         } else {
