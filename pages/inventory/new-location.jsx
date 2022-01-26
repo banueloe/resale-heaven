@@ -10,9 +10,9 @@ const NewLocation = () => {
           Create New Inventory Location
         </Typography>
         <Typography variant="subtitle-2">
-          Inventory locations can be shelves, racks or boxes where inventory
+          {`Inventory locations can be shelves, racks or boxes where inventory
           items are stored. Only the "Location Name" field is required for
-          initial location creation.
+          initial location creation.`}
         </Typography>
         <LocationForm />
       </Grid>
