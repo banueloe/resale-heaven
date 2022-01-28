@@ -3,7 +3,9 @@ import { Grid, Button, Alert } from "@mui/material";
 import NumberSelector from "../select/number-selector";
 import ControlledTextInput from "./controlled-text-field";
 import ConditionSelector from "../select/condition-selector";
+import ImageUpload from "../images/image-upload";
 
+const MAX_IMAGES = 12;
 const ItemsForm = () => {
   const [SKU, setSKU] = useState();
   const [name, setName] = useState();
@@ -11,6 +13,7 @@ const ItemsForm = () => {
   const [quantity, setQuantity] = useState();
   const [condition, setCondition] = useState();
   const [brand, setBrand] = useState();
+  const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
 
   const [error, setError] = useState();
 
@@ -59,6 +62,10 @@ const ItemsForm = () => {
           setSelected={setQuantity}
         />
       </Grid>
+      <Grid item mt={2}>
+        <ImageUpload images={images} setImages={setImages} />
+      </Grid>
+
       {error && <Alert severity="error">{error}</Alert>}
       <Grid item mt={2}>
         <Button variant="contained" type="submit">
