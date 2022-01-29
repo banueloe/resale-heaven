@@ -1,7 +1,9 @@
 import { Button, Grid } from "@mui/material";
 import Image from "next/image";
 import BookSale from "../public/booksale.jpg";
-
+import Camera from "../public/camera.jpg";
+import Desk from "../public/desk.jpg";
+import Office from "../public/office.jpg";
 const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
 const scopes = [
@@ -28,147 +30,146 @@ export async function getServerSideProps(context) {
 
 export default function LandingPage({ authLink }) {
   return (
-    <Grid container>
-      <Grid item xs={6}>
+    <>
+      <div className="bgWrap">
         <Image
-          src={BookSale}
-          alt="Picture of the author"
+          alt="background image"
           priority={true}
-          layout="responsive"
-          height="100"
-          width="100"
+          src={Office}
+          layout="fill"
+          objectFit="cover"
+          quality={100}
         />
-      </Grid>
-      <Grid item xs={6}>
-        <main>
-          <h1 className="title">Welcome to Resale Heaven</h1>
+      </div>
+      <main>
+        <h1 className="title">Welcome to Resale Heaven</h1>
 
-          <Button
-            variant="contained"
-            onClick={() => {
-              window.open(authLink);
-            }}
-          >
-            Sign In
-          </Button>
-        </main>
+        <Button
+          variant="contained"
+          onClick={() => {
+            window.open(authLink);
+          }}
+        >
+          Sign In
+        </Button>
+      </main>
 
-        <style jsx>{`
-          .container {
-            min-height: 100vh;
-            padding: 0 0.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
+      <style jsx>{`
+        .container {
+          min-height: 100vh;
+          padding: 0 0.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
 
-          main {
-            padding: 5rem 0;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
+        main {
+          padding: 5rem 0;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
 
-          a {
-            color: inherit;
-            text-decoration: none;
-          }
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
 
-          .title a {
-            color: #0070f3;
-            text-decoration: none;
-          }
+        .title a {
+          color: #0070f3;
+          text-decoration: none;
+        }
 
-          .title a:hover,
-          .title a:focus,
-          .title a:active {
-            text-decoration: underline;
-          }
+        .title a:hover,
+        .title a:focus,
+        .title a:active {
+          text-decoration: underline;
+        }
 
-          .title {
-            margin: 0;
-            line-height: 1.15;
-            font-size: 4rem;
-          }
+        .title {
+          margin: 0;
+          line-height: 1.15;
+          font-size: 4rem;
+        }
 
-          .title,
-          .description {
-            text-align: center;
-          }
+        .title,
+        .description {
+          text-align: center;
+        }
 
-          .subtitle {
-            font-size: 2rem;
-          }
+        .subtitle {
+          font-size: 2rem;
+        }
 
-          .description {
-            line-height: 1.5;
-            font-size: 1.5rem;
-          }
+        .description {
+          line-height: 1.5;
+          font-size: 1.5rem;
+        }
 
-          code {
-            background: #fafafa;
-            border-radius: 5px;
-            padding: 0.75rem;
-            font-size: 1.1rem;
-            font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-              DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-          }
+        code {
+          background: #fafafa;
+          border-radius: 5px;
+          padding: 0.75rem;
+          font-size: 1.1rem;
+          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+        }
 
+        .grid {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+
+          max-width: 800px;
+          margin-top: 3rem;
+        }
+
+        .card {
+          margin: 1rem;
+          flex-basis: 45%;
+          padding: 1.5rem;
+          text-align: left;
+          color: inherit;
+          text-decoration: none;
+          border: 1px solid #eaeaea;
+          border-radius: 10px;
+          transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .card:hover,
+        .card:focus,
+        .card:active {
+          color: #0070f3;
+          border-color: #0070f3;
+        }
+
+        .card h3 {
+          margin: 0 0 1rem 0;
+          font-size: 1.5rem;
+        }
+
+        .card p {
+          margin: 0;
+          font-size: 1.25rem;
+          line-height: 1.5;
+        }
+
+        .logo {
+          height: 1em;
+        }
+
+        @media (max-width: 600px) {
           .grid {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            max-width: 800px;
-            margin-top: 3rem;
+            width: 100%;
+            flex-direction: column;
           }
-
-          .card {
-            margin: 1rem;
-            flex-basis: 45%;
-            padding: 1.5rem;
-            text-align: left;
-            color: inherit;
-            text-decoration: none;
-            border: 1px solid #eaeaea;
-            border-radius: 10px;
-            transition: color 0.15s ease, border-color 0.15s ease;
-          }
-
-          .card:hover,
-          .card:focus,
-          .card:active {
-            color: #0070f3;
-            border-color: #0070f3;
-          }
-
-          .card h3 {
-            margin: 0 0 1rem 0;
-            font-size: 1.5rem;
-          }
-
-          .card p {
-            margin: 0;
-            font-size: 1.25rem;
-            line-height: 1.5;
-          }
-
-          .logo {
-            height: 1em;
-          }
-
-          @media (max-width: 600px) {
-            .grid {
-              width: 100%;
-              flex-direction: column;
-            }
-          }
-        `}</style>
-      </Grid>
-    </Grid>
+        }
+      `}</style>
+      {/* </Grid> */}
+    </>
   );
 }
