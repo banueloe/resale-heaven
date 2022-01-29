@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export default function handler(req, res) {
+export default async function handler (req, res) {
   if (req.method === "POST") {
     try {
       const client = await clientPromise;
