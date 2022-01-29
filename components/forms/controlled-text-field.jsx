@@ -1,11 +1,11 @@
 import { Grid, TextField } from "@mui/material";
 
-const ControlledTextInput = ({value, setValue, label, marginTop, multiline}) => {
+const ControlledTextInput = ({value, onChange, label, marginTop, multiline}) => {
   return (
     <Grid item mt={marginTop}>
       <TextField
         fullWidth={true}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={onChange}
         value={value}
         label={label}
         multiline={multiline}

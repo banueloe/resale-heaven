@@ -3,11 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const NumberSelector = ({ maxNum, label, selected, setSelected }) => {
-  const handleChange = (event) => {
-    setSelected(event.target.value);
-  };
-
+const NumberSelector = ({ maxNum, label, selected, onChange }) => {
   let options = [];
   for (let i = 1; i <= maxNum; i++) {
     options.push(i);
@@ -20,7 +16,7 @@ const NumberSelector = ({ maxNum, label, selected, setSelected }) => {
         id="selector-id"
         value={selected}
         label={label}
-        onChange={handleChange}
+        onChange={onChange}
       >
         {options.map((option) => (
           <MenuItem key={option} value={option}>{option}</MenuItem>

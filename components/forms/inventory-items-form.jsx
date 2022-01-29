@@ -6,22 +6,28 @@ import ConditionSelector from "../select/condition-selector";
 import ImageUpload from "../images/image-upload";
 
 const MAX_IMAGES = 12;
-const ItemsForm = () => {
-  const [SKU, setSKU] = useState();
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [quantity, setQuantity] = useState();
-  const [condition, setCondition] = useState();
-  const [brand, setBrand] = useState();
-  const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
 
+const ItemsForm = () => {
+  const [userInput, setUserInput] = useState({
+    SKU: "",
+    name: "",
+    brand: "",
+    description: "",
+    quantity: "",
+    condition: "",
+    imageLinks: [],
+  });
+  const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
   const [error, setError] = useState();
+
+  const updateImages = (images) => {};
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!name) {
+    if (!userInput.name) {
       setError(`Error: The "Location Name" field is required.`);
     } else {
+      updateImages(images);
       //TODO handle api call
       // fetch(`/api/activeitems?keywords=${keywords}&condition=${conditionValue}`)
       //   .then((response) => response.json())
@@ -32,34 +38,52 @@ const ItemsForm = () => {
     }
   };
 
-  //TODO support image upload
   return (
     <form onSubmit={handleSubmit}>
       <ControlledTextInput
-        value={SKU}
-        setValue={setSKU}
-        label="SKU: Input custom SKU or leave empty to use next available SKU"
+        value={userInput.SKU}
+        onChange={(event) =>
+          setUserInput({ ...userInput, SKU: event.target.value })
+        }
+        label="Custom SKU (Leave empty to default to next available SKU)"
         marginTop={6}
       />
       <ControlledTextInput
-        value={name}
-        setValue={setName}
+        value={userInput.name}
+        onChange={(event) =>
+          setUserInput({ ...userInput, name: event.target.value })
+        }
         label="Inventory Item Name"
       />
-      <ControlledTextInput value={brand} setValue={setBrand} label="Brand" />
       <ControlledTextInput
-        value={description}
-        setValue={setDescription}
+        value={userInput.brand}
+        onChange={(event) =>
+          setUserInput({ ...userInput, brand: event.target.value })
+        }
+        label="Brand"
+      />
+      <ControlledTextInput
+        value={userInput.description}
+        onChange={(event) =>
+          setUserInput({ ...userInput, description: event.target.value })
+        }
         label="Description: Basic HTML tags are supported"
         multiline={true}
       />
-      <ConditionSelector condition={condition} setCondition={setCondition} />
+      <ConditionSelector
+        condition={userInput.condition}
+        onChange={(event) =>
+          setUserInput({ ...userInput, condition: event.target.value })
+        }
+      />
       <Grid item mt={2}>
         <NumberSelector
           label="Quantity"
           maxNum={10}
-          selected={quantity}
-          setSelected={setQuantity}
+          selected={userInput.quantity}
+          onChange={(event) =>
+            setUserInput({ ...userInput, quantity: event.target.value })
+          }
         />
       </Grid>
       <Grid item mt={2}>

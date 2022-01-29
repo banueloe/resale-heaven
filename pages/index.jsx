@@ -1,8 +1,5 @@
-import { Button, Grid } from "@mui/material";
+import { Button} from "@mui/material";
 import Image from "next/image";
-import BookSale from "../public/booksale.jpg";
-import Camera from "../public/camera.jpg";
-import Desk from "../public/desk.jpg";
 import Office from "../public/office.jpg";
 const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
