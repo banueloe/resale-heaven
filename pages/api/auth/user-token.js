@@ -3,11 +3,7 @@ import { sessionOptions } from "../../../lib/session";
 const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
-  if(req.query.username && req.query.password){
-    //Handle app authentication
-    
-  }
-  else if (req.query.code) {
+  if (req.query.code) {
     //Handle eBay Authentication
     const ebayAuthToken = new EbayAuthToken({
       clientId: process.env.EBAY_APP_ID,
@@ -29,16 +25,16 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
             res.redirect("/home");
           });
         } else {
-          res.status(400).json({ message: data });
+          console.log(`Error: ${data}`);
+          res.redirect("/");
         }
       })
       .catch((error) => {
         console.log(`Error getting Access token :${JSON.stringify(error)}`);
-        res.status(400).json({ message: "Error getting Access token" });
-        // res.redirect("/");
+        res.redirect("/");
       });
   } else {
-    res.status(400).json({ message: "Missing user code, username, or password" });
-    // res.redirect("/");
+    console.log("Error: missing code");
+    res.redirect("/");
   }
 }, sessionOptions);
