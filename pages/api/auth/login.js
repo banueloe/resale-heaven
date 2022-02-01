@@ -1,30 +1,14 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../../lib/session";
-const EbayAuthToken = require("ebay-oauth-nodejs-client");
-
-const scopes = [
-  "https://api.ebay.com/oauth/api_scope",
-  "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
-  "https://api.ebay.com/oauth/api_scope/sell.inventory",
-];
 
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
-  const ebayAuthToken = new EbayAuthToken({
-    clientId: process.env.EBAY_APP_ID,
-    clientSecret: process.env.EBAY_CERT_ID,
-    redirectUri: process.env.EBAY_RUNAME,
-  });
-
-  const authLink = ebayAuthToken.generateUserAuthorizationUrl(
-    "PRODUCTION",
-    scopes
-  );
-
   if (req.body.username && req.body.password) {
-    // authenticate user with database then:
+    //Handle app authentication
+
+    // get user from database then:
     req.session.user = {
-      username: req.body.username,
-      password: req.body.password,
+      id: 230,
+      admin: true,
     };
     await req.session.save();
     res.redirect(
@@ -33,6 +17,6 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
   } else {
     res
       .status(400)
-      .json({ message: "Missing username or password" });
+      .json({ message: "Missing user code, username, or password" });
   }
 }, sessionOptions);
