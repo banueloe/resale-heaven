@@ -3,8 +3,28 @@ import { Button, Grid, Typography, TextField } from "@mui/material";
 import Image from "next/image";
 import Office from "../public/office.jpg";
 
+const EbayAuthToken = require("ebay-oauth-nodejs-client");
+
+const scopes = [
+  "https://api.ebay.com/oauth/api_scope",
+  "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
+  "https://api.ebay.com/oauth/api_scope/sell.inventory",
+];
+
 export async function getServerSideProps(context) {
-  return {};
+  const ebayAuthToken = new EbayAuthToken({
+    clientId: process.env.EBAY_APP_ID,
+    clientSecret: process.env.EBAY_CERT_ID,
+    redirectUri: process.env.EBAY_RUNAME,
+  });
+
+  const authLink = ebayAuthToken.generateUserAuthorizationUrl(
+    "PRODUCTION",
+    scopes
+  );
+  return {
+    props: { authLink: authLink },
+  };
 }
 
 export default function LandingPage({ authLink }) {
@@ -24,7 +44,7 @@ export default function LandingPage({ authLink }) {
       }),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => window.open(authLink));
   };
 
   return (

@@ -11,9 +11,9 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
       admin: true,
     };
     await req.session.save();
-    res.redirect(
-      "https://auth.ebay.com/oauth2/authorize?client_id=ErnestoB-resalehe-PRD-ca0e5e2a1-7048ac66&redirect_uri=Ernesto_Banuelo-ErnestoB-resale-oycbeqs&response_type=code&scope=https://api.ebay.com/oauth/api_scope%20https://api.ebay.com/oauth/api_scope/sell.inventory.readonly%20https://api.ebay.com/oauth/api_scope/sell.inventory"
-    );
+    res
+      .status(200)
+      .json({ message: "Logged in" });
   } else {
     res
       .status(400)
