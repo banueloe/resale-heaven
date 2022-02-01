@@ -30,7 +30,7 @@ export const getServerSideProps = withIronSessionSsr(
     //TODO associate items with their locations here
     return {
       props: {
-        loggedIn: user.userName,
+        loggedIn: user.username,
         inventoryLocations,
         currentItems,
       },
