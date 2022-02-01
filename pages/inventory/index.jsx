@@ -24,7 +24,7 @@ export const getServerSideProps = withIronSessionSsr(
       inventoryLocations = [];
     }
 
-    const user = req.session.user.token;
+    const user = req.session.user;
     const currentItems = await getInventoryItems(user);
 
     //TODO associate items with their locations here
