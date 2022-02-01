@@ -1,31 +1,32 @@
-import { Button} from "@mui/material";
+import { useState } from "react";
+import { Button, Grid, Typography, TextField } from "@mui/material";
 import Image from "next/image";
 import Office from "../public/office.jpg";
-const EbayAuthToken = require("ebay-oauth-nodejs-client");
-
-const scopes = [
-  "https://api.ebay.com/oauth/api_scope",
-  "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
-  "https://api.ebay.com/oauth/api_scope/sell.inventory",
-];
 
 export async function getServerSideProps(context) {
-  const ebayAuthToken = new EbayAuthToken({
-    clientId: process.env.EBAY_APP_ID,
-    clientSecret: process.env.EBAY_CERT_ID,
-    redirectUri: process.env.EBAY_RUNAME,
-  });
-
-  const authLink = ebayAuthToken.generateUserAuthorizationUrl(
-    "PRODUCTION",
-    scopes
-  );
-  return {
-    props: { authLink: authLink },
-  };
+  return {};
 }
 
 export default function LandingPage({ authLink }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (newUser) => {
+    fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        newUser: newUser,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
+  };
+
   return (
     <>
       <div className="bgWrap">
@@ -38,135 +39,43 @@ export default function LandingPage({ authLink }) {
           quality={100}
         />
       </div>
-      <main>
-        <h1 className="title">Welcome to Resale Heaven</h1>
 
-        <Button
-          variant="contained"
-          onClick={() => {
-            window.open(authLink);
-          }}
-        >
-          Sign In
-        </Button>
-      </main>
+      <Grid container alignItems="center" justify="center" direction="column">
+        <Typography variant="h3" mt={16}>
+          Welcome to Resale Heaven
+        </Typography>
 
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
+        <Grid item mt={2}>
+          <TextField
+            sx={{ input: { background: "white" }, width: "45ch" }}
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            label="Username"
+          />
+        </Grid>
 
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
+        <Grid item mt={2} mb={2}>
+          <TextField
+            sx={{ input: { background: "white" }, width: "45ch" }}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            label="Password"
+          />
+        </Grid>
 
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .subtitle {
-          font-size: 2rem;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-      {/* </Grid> */}
+        <Grid item mt={2} mb={2}>
+          <Button
+            variant="contained"
+            sx={{ mr: 2 }}
+            onClick={() => handleLogin(true)}
+          >
+            Create Account
+          </Button>
+          <Button variant="contained" onClick={() => handleLogin(false)}>
+            Login
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

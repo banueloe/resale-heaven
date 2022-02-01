@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, Button } from "@mui/material";
+import { Grid } from "@mui/material";
 import { getInventoryItems } from "../../lib/server-side/inventory-items";
 import TabsWrapper from "../../components/tabs/tabs-wrapper";
 import InventoryItemsTab from "../../components/tabs/inventory-items-tab";
@@ -24,11 +24,13 @@ export const getServerSideProps = withIronSessionSsr(
       inventoryLocations = [];
     }
 
-    const user =req.session.user.token;
+    const user = req.session.user.token;
     const currentItems = await getInventoryItems(user);
+
+    //TODO associate items with their locations here
     return {
       props: {
-        loggedIn: user ? true : false,
+        loggedIn: user,
         inventoryLocations,
         currentItems,
       },
@@ -37,10 +39,10 @@ export const getServerSideProps = withIronSessionSsr(
   sessionOptions
 );
 
-const Inventory = ({ inventoryLocations, currentItems }) => {
+const Inventory = ({ loggedIn, inventoryLocations, currentItems }) => {
   const inventoryItems = currentItems.inventoryItems;
   const [tab, setTab] = useState(0);
-  //console.log(inventoryLocations);
+  console.log(loggedIn);
   return (
     <>
       <Grid
@@ -68,10 +70,6 @@ const Inventory = ({ inventoryLocations, currentItems }) => {
         value={tab}
         setValue={setTab}
       />
-
-      <Grid item>
-        <Button variant="contained">Create New Inventory Item</Button>
-      </Grid>
 
       {tab === 0 && <InventoryItemsTab inventoryItems={inventoryItems} />}
       {tab === 1 && <InventoryLocationsTab />}
