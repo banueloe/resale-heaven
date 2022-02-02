@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button, Grid, Typography, TextField } from "@mui/material";
+import { Button, Grid, Typography, TextField, Alert } from "@mui/material";
 import Image from "next/image";
 import Office from "../public/office.jpg";
-
+import {useRouter} from "next/router";
 const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
 const scopes = [
@@ -28,8 +28,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function LandingPage({ authLink }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
+  const router = useRouter()
 
   const handleLogin = (newUser) => {
     fetch("/api/auth/login", {
@@ -38,13 +40,21 @@ export default function LandingPage({ authLink }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: username,
+        email: email,
         password: password,
         newUser: newUser,
       }),
     })
-      .then((res) => res.json())
-      .then((res) => window.open(authLink));
+      .then((res) => {
+        if (res.ok) {
+          router.push(authLink);
+        } else {
+          return res.text();
+        }
+      })
+      .then((error) => {
+        setError(error);
+      });
   };
 
   return (
@@ -61,16 +71,18 @@ export default function LandingPage({ authLink }) {
       </div>
 
       <Grid container alignItems="center" justify="center" direction="column">
-        <Typography variant="h3" mt={16}>
+        <Typography variant="h1" mt={16}>
           Welcome to Resale Heaven
         </Typography>
+
+        {error && <Alert severity="error">{error}</Alert>}
 
         <Grid item mt={2}>
           <TextField
             sx={{ input: { background: "white" }, width: "45ch" }}
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            label="Username"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            label="Email"
           />
         </Grid>
 
@@ -87,7 +99,10 @@ export default function LandingPage({ authLink }) {
           <Button
             variant="contained"
             sx={{ mr: 2 }}
-            onClick={() => handleLogin(true)}
+            onClick={(event) => {
+              event.preventDefault();
+              handleLogin(true);
+            }}
           >
             Create Account
           </Button>
