@@ -18,7 +18,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
     const collection = db.collection("users");
     const existingUser = await collection.findOne({ email: email });
     const hashedPassword = await hashString(password);
-    console.log("user is ", existingUser)
+    
     if (newUser) {
       if (Array.isArray(existingUser) && existingUser.length > 0) {
         res.status(422).json("Account with this email already exists");
