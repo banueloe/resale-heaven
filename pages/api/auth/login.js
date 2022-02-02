@@ -18,7 +18,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
     const collection = db.collection("users");
     const existingUser = await collection.findOne({ email: email });
     const hashedPassword = await hashString(password);
-    
+
     if (newUser) {
       if (Array.isArray(existingUser) && existingUser.length > 0) {
         res.status(422).json("Account with this email already exists");
@@ -40,7 +40,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
     }
   } catch (e) {
     console.log(e);
-    res.status(500).json(`Unknown error. Please contact site admin or try again later`);
+    res.status(500).json(`Unknown error. Please contact site admin or try again later. Error message: ${e}`);
     return;
   }
 
