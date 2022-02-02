@@ -1,7 +1,9 @@
-import { Grid, Button } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import MediaCard from "../components/media-card";
 import { useRouter } from "next/router";
 import BookSale from "../public/booksale.jpg";
+import Money from "../public/money.jpg";
+import Warehouse from "../public/warehouse.jpg";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -23,31 +25,43 @@ const Home = ({ loggedIn }) => {
   return (
     <>
       <Grid container>
-        <Grid item xs={4}>
+        <Grid container alignItems="center" justify="center" direction="column">
+          <Typography variant="h3" mt={8} mb={16}>
+            What would you like to do today?
+          </Typography>
+        </Grid>
+
+        <Grid item xs={1}/>
+        <Grid item xs={3}>
           <MediaCard
             title="Buy"
+            link="/buy"
             description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
             image={BookSale}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={1}/>
+        <Grid item xs={3}>
           <MediaCard
-            title="Buy"
+            title="Inventory Management"
+            link="/inventory"
             description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
-            image={BookSale}
+            image={Warehouse}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={1}/>
+        <Grid item xs={3}>
           <MediaCard
-            title="Buy"
+            title="Accounting"
+            link="/accounting"
             description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
-            image={BookSale}
+            image={Money}
           />
         </Grid>
       </Grid>
     </>
   );
-  // return (
+  // return (//TODO add this to all pages
   //   <Grid container alignItems="center" justify="center" direction="column">
   //     <Grid item>
   //       <h>Authentication Error</h>
