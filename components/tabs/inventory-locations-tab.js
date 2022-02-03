@@ -17,14 +17,14 @@ const InventoryLocationsTab = ({ inventoryLocations }) => {
           <Typography variant="h4">Locations</Typography>
         </Grid>
         <Grid item mt={2} mb={6}>
-          <Button href="/inventory/new-item" variant="contained">
+          <Button href="/inventory/new-location" variant="contained">
             Create New Inventory Location
           </Button>
         </Grid>
 
         <Grid container direction="row">
           {inventoryLocations.map((location) => (
-            <Card sx={{ border: 1, borderColor: 'gray', width: 400, mr: 8, mb: 8 }}>
+            <Card key={location.name} sx={{ border: 1, borderColor: 'gray', width: 400, mr: 8, mb: 8 }}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {location.name}
