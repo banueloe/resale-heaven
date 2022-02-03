@@ -7,7 +7,7 @@ const InventoryLocationsTab = () => {
         Test
       </Grid>
       <Grid item>
-        <Button variant="contained">Create New Inventory Location</Button>
+        <Button href="/inventory/new-location" variant="contained">Create New Inventory Location</Button>
       </Grid>
     </Grid>
   );

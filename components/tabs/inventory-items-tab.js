@@ -1,4 +1,4 @@
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Box } from "@mui/material";
 import InventoryTable from "../../components/tables/inventory-table";
 
 const InventoryItemsTab = ({ inventoryItems }) => {
@@ -8,10 +8,10 @@ const InventoryItemsTab = ({ inventoryItems }) => {
         Test
       </Grid>
       <Grid item xs={10}>
+        <Button href="/inventory/new-item" variant="contained">
+          Create New Inventory Item
+        </Button>
         <InventoryTable inventoryItems={inventoryItems} />
-        <Grid item>
-          <Button variant="contained">Create New Inventory Item</Button>
-        </Grid>
       </Grid>
     </Grid>
   );

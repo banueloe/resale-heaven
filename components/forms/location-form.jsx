@@ -1,23 +1,38 @@
 import { useState } from "react";
 import { Grid, Button, TextField, Alert } from "@mui/material";
+import {useRouter} from "next/router";
 
 const LocationForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!name) {
       setError(`Error: The "Location Name" field is required.`);
     } else {
-        //TODO handle api call
-      // fetch(`/api/activeitems?keywords=${keywords}&condition=${conditionValue}`)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     setActiveItems(data.activeItems);
-      //     setDisplayForm(false);
-      //   });
+      fetch("/api/inventory/new-location", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          description: description,
+        }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            router.push('/inventory');
+          } else {
+            return res.text();
+          }
+        })
+        .then((error) => {
+          setError(error);
+        });
     }
   };
 
