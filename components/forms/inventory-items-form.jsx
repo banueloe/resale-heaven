@@ -4,6 +4,7 @@ import NumberSelector from "../select/number-selector";
 import ControlledTextInput from "./controlled-text-field";
 import ConditionSelector from "../select/condition-selector";
 import ImageUpload from "../images/image-upload";
+import { useRouter } from "next/router";
 
 const MAX_IMAGES = 12;
 
@@ -19,22 +20,38 @@ const ItemsForm = () => {
   });
   const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
   const [error, setError] = useState();
-
-  const updateImages = (images) => {};
+  const router = useRouter();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!userInput.name) {
-      setError(`Error: The "Location Name" field is required.`);
+      setError(`Error: The "Location Name" field is required.`); //TODO handle form check
     } else {
-      updateImages(images);
-      //TODO handle api call
-      // fetch(`/api/activeitems?keywords=${keywords}&condition=${conditionValue}`)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     setActiveItems(data.activeItems);
-      //     setDisplayForm(false);
-      //   });
+      const formData = new FormData();
+      Object.keys(userInput).forEach((input) => {
+        formData.append(input, userInput[input]);
+      });
+
+      images.forEach((image) => {
+        if (image) {
+          formData.append("image", image);
+        }
+      });
+
+      fetch("/api/inventory/new-item", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => {
+          if (res.ok) {
+            router.push("/inventory");
+          } else {
+            return res.text();
+          }
+        })
+        .then((error) => {
+          setError(error);
+        });
     }
   };
 
