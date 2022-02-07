@@ -11,12 +11,9 @@ const ConditionSelector = ({ condition, onChange }) => {
           label="Condition"
           onChange={onChange}
         >
-          <MenuItem value={1}>Brand New</MenuItem>
-          <MenuItem value={2}>New Other - New Without Tags</MenuItem>
-          <MenuItem value={3}>Used - Excellent</MenuItem>
-          <MenuItem value={4}>Used - Very Good</MenuItem>
-          <MenuItem value={5}>Used - Good</MenuItem>
-          <MenuItem value={6}>Used - Acceptable</MenuItem>
+          <MenuItem value={"NEW"}>Brand New</MenuItem>
+          <MenuItem value={"NEW_OTHER"}>New Other - New Without Tags</MenuItem>
+          <MenuItem value={"USED_EXCELLENT"}>Used </MenuItem>
         </Select>
       </FormControl>
     </Grid>

@@ -16,7 +16,6 @@ const ItemsForm = () => {
     description: "",
     quantity: "",
     condition: "",
-    imageLinks: [],
   });
   const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
   const [error, setError] = useState();
@@ -24,14 +23,15 @@ const ItemsForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!userInput.name) {
-      setError(`Error: The "Location Name" field is required.`); //TODO handle form check
+    if (!userInput.name || !userInput.brand || !userInput.description || !userInput.quantity || !userInput.condition || !images.some(image => image !== null)) {
+      setError(
+        `Error: Missing one or more fields. Remember, only the SKU field is optional.`
+      );
     } else {
       const formData = new FormData();
       Object.keys(userInput).forEach((input) => {
         formData.append(input, userInput[input]);
       });
-
       images.forEach((image) => {
         if (image) {
           formData.append("image", image);
