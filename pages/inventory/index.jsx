@@ -16,7 +16,10 @@ export const getServerSideProps = withIronSessionSsr(
       const client = await clientPromise;
       const db = client.db();
       const collection = db.collection("users");
-      inventoryLocations = await collection.findOne({email: req.session.user.email});
+      inventoryLocations = await collection.findOne(
+        { email: req.session.user.email },
+        { projection: { password: false, email: false } }
+      );
     } catch (e) {
       console.error(e);
       inventoryLocations = [];
@@ -25,7 +28,6 @@ export const getServerSideProps = withIronSessionSsr(
     const user = req.session.user;
     const currentItems = await getInventoryItems(req.session.user.token);
 
-    //TODO associate items with their locations here
     //TODO change back loggedinprop
     return {
       props: {
@@ -69,8 +71,10 @@ const Inventory = ({ loggedIn, inventoryLocations, inventoryItems }) => {
         setValue={setTab}
       />
 
-      {tab === 0 && <InventoryItemsTab inventoryItems={inventoryItems} />}
-      {tab === 1 && <InventoryLocationsTab inventoryLocations={inventoryLocations}/>}
+      {tab === 0 && <InventoryItemsTab inventoryItems={inventoryItems} inventoryLocations={inventoryLocations} />}
+      {tab === 1 && (
+        <InventoryLocationsTab inventoryLocations={inventoryLocations} />
+      )}
     </>
   );
 };

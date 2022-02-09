@@ -4,7 +4,6 @@ import {
   Typography,
   Card,
   CardContent,
-  CardActionArea,
 } from "@mui/material";
 
 const InventoryLocationsTab = ({ inventoryLocations }) => {
@@ -23,8 +22,8 @@ const InventoryLocationsTab = ({ inventoryLocations }) => {
         </Grid>
 
         <Grid container direction="row">
-          {inventoryLocations.map((location) => (
-            <Card key={location.name} sx={{ border: 1, borderColor: 'gray', width: 400, mr: 8, mb: 8 }}>
+          {inventoryLocations.map((location, index) => (
+            <Card key={index} sx={{ border: 1, borderColor: 'gray', width: 400, mr: 8, mb: 8 }}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {location.name}

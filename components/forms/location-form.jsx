@@ -45,7 +45,7 @@ const LocationForm = () => {
             fullWidth={true}
             onChange={(event) => setName(event.target.value)}
             value={name}
-            label="Location Name"
+            label="Location Name / ID"
           />
         </Grid>
         <Grid item mt={2}>

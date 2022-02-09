@@ -1,7 +1,7 @@
 import { Grid, Button, Typography } from "@mui/material";
 import InventoryTable from "../../components/tables/inventory-table";
 
-const InventoryItemsTab = ({ inventoryItems }) => {
+const InventoryItemsTab = ({ inventoryItems, inventoryLocations }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={2} />
@@ -15,7 +15,10 @@ const InventoryItemsTab = ({ inventoryItems }) => {
           </Button>
         </Grid>
 
-        <InventoryTable inventoryItems={inventoryItems} />
+        <InventoryTable
+          inventoryItems={inventoryItems}
+          inventoryLocations={inventoryLocations}
+        />
       </Grid>
     </Grid>
   );
