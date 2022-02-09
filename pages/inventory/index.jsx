@@ -20,20 +20,31 @@ export const getServerSideProps = withIronSessionSsr(
         { email: req.session.user.email },
         { projection: { password: false, email: false } }
       );
+      inventoryLocations = inventoryLocations.inventoryLocations;
     } catch (e) {
       console.error(e);
       inventoryLocations = [];
     }
 
     const user = req.session.user;
-    const currentItems = await getInventoryItems(req.session.user.token);
+
+    let currentItems = await getInventoryItems(req.session.user.token);
+    currentItems = currentItems.inventoryItems;
+    //currentItems.sort();//TODO Sort
+
+    inventoryLocations.forEach((location) => {
+      location.inventoryItems.forEach((item) => {
+        const found = currentItems.find((i) => i.sku === item);
+        found.location = location.name;
+      });
+    });
 
     //TODO change back loggedinprop
     return {
       props: {
         loggedIn: user,
-        inventoryLocations: inventoryLocations.inventoryLocations,
-        inventoryItems: currentItems.inventoryItems,
+        inventoryLocations: inventoryLocations,
+        inventoryItems: currentItems,
       },
     };
   },
@@ -71,7 +82,12 @@ const Inventory = ({ loggedIn, inventoryLocations, inventoryItems }) => {
         setValue={setTab}
       />
 
-      {tab === 0 && <InventoryItemsTab inventoryItems={inventoryItems} inventoryLocations={inventoryLocations} />}
+      {tab === 0 && (
+        <InventoryItemsTab
+          inventoryItems={inventoryItems}
+          inventoryLocations={inventoryLocations}
+        />
+      )}
       {tab === 1 && (
         <InventoryLocationsTab inventoryLocations={inventoryLocations} />
       )}

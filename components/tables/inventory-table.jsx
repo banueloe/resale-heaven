@@ -44,8 +44,8 @@ export default function InventoryTable({ inventoryItems, inventoryLocations }) {
                     <InputLabel id= {`select-location-${item.sku}`}>Location</InputLabel>
                     <Select
                       id= {`select-component-location-${item.sku}`}
-                      value={10}
-                      label="Age"
+                      value={item.location}
+                      label="Location"
                       onChange={() => {}}
                     >
                       {inventoryLocations.map(location => <MenuItem key={location.name} value={location.name}>{location.name}</MenuItem>)}
