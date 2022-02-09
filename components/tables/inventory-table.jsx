@@ -48,7 +48,7 @@ export default function InventoryTable({ inventoryItems, inventoryLocations }) {
                       label="Age"
                       onChange={() => {}}
                     >
-                      {inventoryLocations.map(location => <MenuItem value={location.name}>{location.name}</MenuItem>)}
+                      {inventoryLocations.map(location => <MenuItem key={location.name} value={location.name}>{location.name}</MenuItem>)}
                     </Select>
                   </FormControl>
                 </TableCell>
