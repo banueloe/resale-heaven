@@ -7,8 +7,8 @@ const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
 const scopes = [
   "https://api.ebay.com/oauth/api_scope",
-  "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
   "https://api.ebay.com/oauth/api_scope/sell.inventory",
+  "https://api.ebay.com/oauth/api_scope/sell.finances"
 ];
 
 export async function getServerSideProps(context) {
