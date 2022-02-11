@@ -4,6 +4,7 @@ import { getInventoryItems } from "../../lib/server-side/inventory-items";
 import TabsWrapper from "../../components/tabs/tabs-wrapper";
 import InventoryItemsTab from "../../components/tabs/inventory-items-tab";
 import InventoryLocationsTab from "../../components/tabs/inventory-locations-tab";
+import AuthError from "../../components/auth-error";
 
 import clientPromise from "../../lib/mongodb";
 import { withIronSessionSsr } from "iron-session/next";
@@ -11,6 +12,11 @@ import { sessionOptions } from "../../lib/session";
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
+    const user = req.session.user;
+    if (!user.token || !user.email) {
+      return { props: { loggedIn: false } };
+    }
+
     let inventoryLocations;
     try {
       const client = await clientPromise;
@@ -26,9 +32,7 @@ export const getServerSideProps = withIronSessionSsr(
       inventoryLocations = [];
     }
 
-    const user = req.session.user;
-
-    let currentItems = await getInventoryItems(req.session.user.token);
+    let currentItems = await getInventoryItems(user.token);
     currentItems = currentItems.inventoryItems;
     //currentItems.sort();//TODO Sort
 
@@ -39,10 +43,9 @@ export const getServerSideProps = withIronSessionSsr(
       });
     });
 
-    //TODO change back loggedinprop
     return {
       props: {
-        loggedIn: user,
+        loggedIn: true,
         inventoryLocations: inventoryLocations,
         inventoryItems: currentItems,
       },
@@ -53,7 +56,11 @@ export const getServerSideProps = withIronSessionSsr(
 
 const Inventory = ({ loggedIn, inventoryLocations, inventoryItems }) => {
   const [tab, setTab] = useState(0);
-  console.log(loggedIn);
+
+  if (!loggedIn) {
+    return <AuthError />;
+  }
+
   return (
     <>
       <Grid
