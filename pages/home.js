@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@mui/material";
 import MediaCard from "../components/media-card";
-import { useRouter } from "next/router";
 import BookSale from "../public/booksale.jpg";
 import Money from "../public/money.jpg";
 import Warehouse from "../public/warehouse.jpg";
+import AuthError from "../components/auth-error";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -20,8 +20,10 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 const Home = ({ loggedIn }) => {
-  console.log(loggedIn);
-  const router = useRouter();
+  if (!loggedIn) {
+    return <AuthError />;
+  }
+
   return (
     <>
       <Grid container>
@@ -31,7 +33,7 @@ const Home = ({ loggedIn }) => {
           </Typography>
         </Grid>
 
-        <Grid item xs={1}/>
+        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Buy"
@@ -40,7 +42,7 @@ const Home = ({ loggedIn }) => {
             image={BookSale}
           />
         </Grid>
-        <Grid item xs={1}/>
+        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Inventory Management"
@@ -49,7 +51,7 @@ const Home = ({ loggedIn }) => {
             image={Warehouse}
           />
         </Grid>
-        <Grid item xs={1}/>
+        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Accounting"
@@ -61,18 +63,6 @@ const Home = ({ loggedIn }) => {
       </Grid>
     </>
   );
-  // return (//TODO add this to all pages
-  //   <Grid container alignItems="center" justify="center" direction="column">
-  //     <Grid item>
-  //       <h>Authentication Error</h>
-  //     </Grid>
-  //     <h2>
-  //       Authentication is required to use certain features in resale-heaven.
-  //       Please try again.
-  //     </h2>
-  //     <Button>Sign in</Button>
-  //   </Grid>
-  // );
 };
 
 export default Home;
