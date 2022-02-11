@@ -1,4 +1,5 @@
 import AuthError from "../components/auth-error";
+import { useState } from "react";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -6,6 +7,7 @@ import { sessionOptions } from "../lib/session";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     let user = req.session.user;
+
     if (!user.token || !user.email) {
       return { props: { loggedIn: false } };
     }
@@ -20,6 +22,8 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 const Accounting = ({ loggedIn }) => {
+  const [transactions, setTransactions] = useState({});
+
   const fetchTransactions = (event) => {
     event.preventDefault;
     fetch("/api/transactions", {
@@ -30,15 +34,17 @@ const Accounting = ({ loggedIn }) => {
     })
       .then((res) => {
         if (res.ok) {
-          console.log(res);
+          return res.json();
         } else {
           return res.text();
         }
       })
-      .then((error) => {
-        console.log(error);
+      .then((data) => {
+        if (data.data) setTransactions(data);
+        else setTransactions({});
       });
   };
+  console.log(transactions)
   if (!loggedIn) {
     return <AuthError />;
   }

@@ -10,7 +10,6 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ error: "This endpoint only accepts GET requests" });
       return resolve();
     }
-
     if (!req.session || !req.session.user.token || !req.session.user.email) {
       res.status(401).json({ error: "Unauthorized: User is not logged in" });
       return resolve();
@@ -25,10 +24,12 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         },
       })
       .then((response) => {
-        resolve(response.data);
+        res.status(200).json({ data: response.data });
+        return resolve();
       })
       .catch((error) => {
-        reject(error);
+        res.status(400).json({ error: "Error getting transaction data." });
+        return resolve();
       });
   });
 }, sessionOptions);
