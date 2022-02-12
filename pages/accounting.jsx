@@ -1,5 +1,5 @@
 import AuthError from "../components/auth-error";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -7,7 +7,6 @@ import { sessionOptions } from "../lib/session";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     let user = req.session.user;
-
     if (!user.token || !user.email) {
       return { props: { loggedIn: false } };
     }
@@ -24,9 +23,25 @@ export const getServerSideProps = withIronSessionSsr(
 const Accounting = ({ loggedIn }) => {
   const [transactions, setTransactions] = useState({});
 
+  useEffect(() => {
+    fetch("/api/auth/paypal-token", {
+        method: "POST",
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return res.text();
+          }
+        })
+        .then((data) => {
+          console.log(data, "data")
+        });
+  }, []);
+
   const fetchTransactions = (event) => {
     event.preventDefault;
-    fetch("/api/transactions", {
+    fetch("/api/ebay-transactions", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +59,8 @@ const Accounting = ({ loggedIn }) => {
         else setTransactions({});
       });
   };
-  console.log(transactions)
+
+  console.log(transactions);
   if (!loggedIn) {
     return <AuthError />;
   }
