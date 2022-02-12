@@ -10,8 +10,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ error: "This endpoint only accepts GET requests" });
       return resolve();
     }
-    
-    if (!req.session || !req.session.user.token || !req.session.user.email || !res.session.user.paypal_token) {
+
+    if (!req.session || !req.session.user.token || !req.session.user.email || !req.session.user.paypal_token) {
       res.status(401).json({ error: "Unauthorized: User is not logged in" });
       return resolve();
     }
