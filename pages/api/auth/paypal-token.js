@@ -3,6 +3,12 @@ import { sessionOptions } from "../../../lib/session";
 const axios = require("axios");
 
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
+  if (req.method !== "POST")
+    res.status(405).json({ error: "This endpoint only accepts GET requests" });
+
+  if (!req.session || !req.session.user.token || !req.session.user.email )
+    res.status(401).json({ error: "Unauthorized: User is not logged in" });
+
   let dataString = "grant_type=client_credentials";
   await axios
     .post("https://api-m.paypal.com/v1/oauth2/token", dataString, {
@@ -20,7 +26,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
         paypal_token: data.data.access_token,
       };
       await req.session.save().then(() => {
-        res.status(200).json({ token: data.data.scope });
+        res.status(200).json({ Success: "Paypal token has been store in user session" });
       });
     })
     .catch((error) => {
