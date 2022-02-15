@@ -9,8 +9,8 @@ export default function CalendarRangePicker({dateRange, setDateRange}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DateRangePicker
-        startText="Check-in"
-        endText="Check-out"
+        startText="Start"
+        endText="End"
         value={dateRange}
         onChange={(newDateRange) => {
           setDateRange(newDateRange);
