@@ -99,7 +99,7 @@ const Accounting = ({ loggedIn }) => {
       <Grid item>
         <Typography variant="subtitle1">
           To get started, choose a start and end date for the data you want to
-          calculate and click "View Data".
+          calculate and click 'View Data'.
         </Typography>
       </Grid>
       <Grid item>
