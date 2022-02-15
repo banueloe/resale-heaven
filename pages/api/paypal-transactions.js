@@ -11,14 +11,14 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       return resolve();
     }
     
-    if (!req.session || !req.session.user.token || !req.session.user.email || !req.session.user.paypal_token) {
+    if (!req.session.user || !req.session.user.token || !req.session.user.email || !req.session.user.paypal_token) {
       res.status(401).json({ error: "Unauthorized: User is not logged in" });
       return resolve();
     }
 
     axios
       .get(`https://api-m.paypal.com/v1/reporting/transactions`, {
-        params: {start_date: "2021-01-01T00:00:00Z", end_date: "2021-01-31T23:59:59Z", page_size: 500},
+        params: {start_date: req.query.start, end_date: req.query.end, page_size: 500},
         headers: {
           Authorization: `Bearer ${req.session.user.paypal_token}`,
           Accept: "application/json",

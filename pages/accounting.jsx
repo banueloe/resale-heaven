@@ -21,26 +21,26 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 const Accounting = ({ loggedIn }) => {
-  const [transactions, setTransactions] = useState({});
+  const [sales, setSales] = useState({});
+  const [shippingCost, setShippingCost] = useState({});
 
   useEffect(() => {
     fetch("/api/auth/paypal-token", {
-        method: "POST",
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.text();
+        }
       })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return res.text();
-          }
-        })
-        .then((data) => {
-          console.log(data, "data")
-        });
+      .then((data) => {
+        console.log(data, "data");
+      });
   }, []);
 
-  const fetchTransactions = (event) => {
-    event.preventDefault;
+  const fetchSales = () => {
     fetch("/api/ebay-transactions", {
       method: "GET",
       headers: {
@@ -55,12 +55,40 @@ const Accounting = ({ loggedIn }) => {
         }
       })
       .then((data) => {
-        if (data.data) setTransactions(data);
-        else setTransactions({});
+        if (data.data) setSales(data);
+        else setSales({});
       });
   };
 
-  console.log(transactions);
+  const fetchShippingCosts = () => {
+      console.log("fetching")
+    fetch(
+      `/api/paypal-transactions?start=2021-01-01T00:00:00Z&end=2021-01-31T23:59:59Z`,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.text();
+        }
+      })
+      .then((data) => {
+          console.log(data, "paypal")
+        if (data.data) setShippingCost(data);
+        else setShippingCost({});
+      });
+  };
+
+  const fetchTransactions = (event) => {
+    event.preventDefault();
+    fetchSales();
+    fetchShippingCosts();
+  };
+
+  console.log("sales", sales, "expenses", shippingCost);
   if (!loggedIn) {
     return <AuthError />;
   }
