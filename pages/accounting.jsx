@@ -1,9 +1,10 @@
 import AuthError from "../components/auth-error";
 import { useState, useEffect } from "react";
-import CalendarRangePicker from "../components/date-range-picker";
 import format from "date-fns/format";
 import { fetchSales, fetchShippingCosts } from "../lib/transaction-functions";
-import { Grid, Button, Typography, Alert } from "@mui/material";
+import { Grid } from "@mui/material";
+import AccountingCard from "../components/accounting-card";
+import AccountingForm from "../components/forms/accounting-form";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -27,8 +28,8 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 const Accounting = ({ loggedIn }) => {
-  const [sales, setSales] = useState({});
-  const [shippingCost, setShippingCost] = useState({});
+  const [sales, setSales] = useState();
+  const [expenses, setExpenses] = useState();
   const [dateRange, setDateRange] = useState([null, null]);
   const [error, setError] = useState();
 
@@ -61,62 +62,37 @@ const Accounting = ({ loggedIn }) => {
         new Date(dateRange[0]),
         "yyyy-MM-dd'T'HH:mm:ss'Z'"
       );
-      const endDate = format(
-        new Date(dateRange[1]),
-        "yyyy-MM-dd'T'HH:mm:ss'Z'"
-      );
+      let endDate = new Date(dateRange[1]).setHours(23);
+      endDate = new Date(endDate).setMinutes(59, 59);
+      endDate = format(endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
       fetchSales(startDate, endDate, setSales);
-      fetchShippingCosts(startDate, endDate, setShippingCost);
+      fetchShippingCosts(startDate, endDate, setExpenses);
     }
   };
 
-  console.log("sales", sales, "expenses", shippingCost);
+  console.log("sales", sales, "expenses", expenses);
   if (!loggedIn) {
     return <AuthError />;
   }
 
   return (
-    <Grid
-      container
-      spacing={2}
-      alignItems="center"
-      justify="center"
-      direction="column"
-    >
-      <Grid item>
-        <Typography mt={4} mb={2} variant="h3">
-          Accounting
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="subtitle1">
-          View your past eBay and PayPal transactions to calculate revenue,
-          expenses and estimate profit. Resale-Heaven assumes that your linked
-          PayPal account is a business account that processes shipping
-          transactions only.
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="subtitle1">
-          {`To get started, choose a start and end date for the data you want to
-          calculate and click "View Data".`}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <CalendarRangePicker
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-        />
-      </Grid>
-      {error && (
-        <Grid item>
-          <Alert severity="error">{error}</Alert>{" "}
+    <Grid container spacing={2}>
+      <AccountingForm
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        fetchTransactions={fetchTransactions}
+        error={error}
+      />
+      <Grid container>
+        <Grid item xs={1} />
+        <Grid item xs={4}>
+          {sales && <AccountingCard title="Sales" data={sales} />}
         </Grid>
-      )}
-      <Grid item>
-        <Button variant="contained" onClick={fetchTransactions}>
-          View Data
-        </Button>
+        <Grid item xs={2} />
+        <Grid item xs={4}>
+          {expenses && <AccountingCard title="Expenses" data={expenses} />}
+        </Grid>
+        <Grid item xs={1} />
       </Grid>
     </Grid>
   );
