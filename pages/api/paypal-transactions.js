@@ -25,12 +25,11 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         },
       })
       .then((response) => {
-          console.log("response," , response);
         res.status(200).json({ data: response.data });
         return resolve();
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
         res.status(400).json({ error: "Error getting transaction data." });
         return resolve();
       });

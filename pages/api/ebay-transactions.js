@@ -16,8 +16,13 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       return resolve();
     }
 
+    if(!req.query.start || !req.query.end){
+      res.status(400).json({ error: "Error: Missing start or end date in request." });
+      return resolve();
+    }
+
     axios
-      .get(`https://apiz.ebay.com/sell/finances/v1/transaction?limit=10`, {
+      .get(`https://apiz.ebay.com/sell/finances/v1/transaction?limit=1000&filter=transactionDate:[${req.query.start}..${req.query.end}]`, {
         headers: {
           Authorization: `Bearer ${req.session.user.token}`,
           "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
@@ -29,6 +34,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         return resolve();
       })
       .catch((error) => {
+        console.log(error);
         res.status(400).json({ error: "Error getting transaction data." });
         return resolve();
       });
