@@ -10,7 +10,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ error: "This endpoint only accepts GET requests" });
       return resolve();
     }
-    
+
     if (!req.session.user || !req.session.user.token || !req.session.user.email || !req.session.user.paypal_token) {
       res.status(401).json({ error: "Unauthorized: User is not logged in" });
       return resolve();
@@ -18,14 +18,34 @@ export default withIronSessionApiRoute(async function handler(req, res) {
 
     axios
       .get(`https://api-m.paypal.com/v1/reporting/transactions`, {
-        params: {start_date: req.query.start, end_date: req.query.end, page_size: 500},
+        params: {
+          start_date: req.query.start,
+          end_date: req.query.end,
+          page_size: 500,
+        },
         headers: {
           Authorization: `Bearer ${req.session.user.paypal_token}`,
           Accept: "application/json",
         },
       })
       .then((response) => {
-        res.status(200).json({ data: response.data });
+        let responseData = response.data.transaction_details.filter(
+          (transaction) =>
+            transaction.transaction_info.transaction_event_code !== "T0600" &&
+            transaction.transaction_info.transaction_event_code !== "T0700"
+        );
+        responseData = responseData.map((transaction) => {
+          return {
+            category: "Shipping",
+            source: "Paypal",
+            description: transaction.transaction_info.transaction_subject,
+            amount: -transaction.transaction_info.transaction_amount.value,
+            transactionId: transaction.transaction_info.transaction_id,
+            orderId: '',
+            date: transaction.transaction_info.transaction_initiation_date,
+          };
+        });
+        res.status(200).json({ data: responseData });
         return resolve();
       })
       .catch((error) => {

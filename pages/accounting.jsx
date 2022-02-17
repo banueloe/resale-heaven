@@ -1,7 +1,7 @@
 import AuthError from "../components/auth-error";
 import { useState, useEffect } from "react";
 import format from "date-fns/format";
-import { fetchSales, fetchShippingCosts } from "../lib/transaction-functions";
+import { fetchEbayTransactions, fetchShippingCosts } from "../lib/transaction-functions";
 import { Grid } from "@mui/material";
 import AccountingCard from "../components/accounting-card";
 import AccountingForm from "../components/forms/accounting-form";
@@ -14,6 +14,7 @@ const MAX_DAYS = 2592000000;
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     let user = req.session.user;
+
     if (!user.token || !user.email) {
       return { props: { loggedIn: false } };
     }
@@ -51,6 +52,8 @@ const Accounting = ({ loggedIn }) => {
 
   const fetchTransactions = (event) => {
     event.preventDefault();
+    setSales();
+    setExpenses();
     if (!dateRange[0] || !dateRange[1]) {
       setError(
         `Error: Missing one or more dates. Remember, both date fields are required.`
@@ -65,12 +68,11 @@ const Accounting = ({ loggedIn }) => {
       let endDate = new Date(dateRange[1]).setHours(23);
       endDate = new Date(endDate).setMinutes(59, 59);
       endDate = format(endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-      fetchSales(startDate, endDate, setSales);
+      fetchEbayTransactions(startDate, endDate, setSales, setExpenses);
       fetchShippingCosts(startDate, endDate, setExpenses);
     }
   };
 
-  console.log("sales", sales, "expenses", expenses);
   if (!loggedIn) {
     return <AuthError />;
   }
