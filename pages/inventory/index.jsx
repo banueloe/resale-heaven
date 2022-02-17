@@ -13,7 +13,7 @@ import { sessionOptions } from "../../lib/session";
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     const user = req.session.user;
-    if (!user.token || !user.email) {
+    if (!user || !user.token || !user.email) {
       return { props: { loggedIn: false } };
     }
 

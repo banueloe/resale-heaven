@@ -12,7 +12,7 @@ export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
     return {
       props: {
-        loggedIn: req.session.user ? true : false,
+        loggedIn: req.session.user && req.session.user.token && req.session.user.email ? true : false,
       },
     };
   },

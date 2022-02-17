@@ -13,15 +13,9 @@ const MAX_DAYS = 2592000000;
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
-    let user = req.session.user;
-
-    if (!user.token || !user.email) {
-      return { props: { loggedIn: false } };
-    }
-
     return {
       props: {
-        loggedIn: true,
+        loggedIn: req.session.user && req.session.user.token && req.session.user.email ? true : false,
       },
     };
   },
