@@ -1,6 +1,6 @@
 import axios from "axios";
 import { withIronSessionApiRoute } from "iron-session/next";
-import { sessionOptions } from "../../lib/session";
+import { sessionOptions } from "../../../lib/session";
 
 export default withIronSessionApiRoute(async function handler(req, res) {
   return new Promise((resolve) => {
@@ -10,7 +10,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         .json({ error: "This endpoint only accepts GET requests" });
       return resolve();
     }
-  
+    
     if (!req.session || !req.session.user.token || !req.session.user.email || !req.session.user.paypal_token) {
       res.status(401).json({ error: "Unauthorized: User is not logged in" });
       return resolve();
