@@ -14,7 +14,6 @@ const AccountingCard = ({ title, data }) => {
   let total = 0;
   data.forEach((transaction) => (total += transaction.amount));
 
-  console.log(title, data);
   return (
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
       <Grid container justifyContent="center">

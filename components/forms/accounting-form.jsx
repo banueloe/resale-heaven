@@ -1,7 +1,12 @@
 import { Grid, Button, Typography, Alert } from "@mui/material";
-import CalendarRangePicker from "../date-range-picker";
+import CalendarRangePicker from "../date/date-range-picker";
 
-const AccountingForm = ({ dateRange, setDateRange, fetchTransactions, error }) => {
+const AccountingForm = ({
+  dateRange,
+  setDateRange,
+  fetchTransactions,
+  error,
+}) => {
   return (
     <Grid
       container
@@ -26,7 +31,7 @@ const AccountingForm = ({ dateRange, setDateRange, fetchTransactions, error }) =
       <Grid item>
         <Typography variant="subtitle1">
           {`To get started, choose a start and end date for the data you want to
-      calculate and click "View Data".`}
+          calculate and click "View Data".`}
         </Typography>
       </Grid>
       <Grid item>
