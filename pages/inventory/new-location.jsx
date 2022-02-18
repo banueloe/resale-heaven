@@ -1,7 +1,29 @@
 import { Grid, Typography } from "@mui/material";
 import LocationForm from "../../components/forms/location-form";
+import AuthError from "../../components/auth-error";
 
-const NewLocation = () => {
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../../lib/session";
+
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req }) {
+    return {
+      props: {
+        loggedIn:
+          req.session.user && req.session.user.token && req.session.user.email
+            ? true
+            : false,
+      },
+    };
+  },
+  sessionOptions
+);
+
+const NewLocation = ({loggedIn}) => {
+  if (!loggedIn) {
+    return <AuthError />;
+  }
+
   return (
     <Grid container>
       <Grid item xs={4}/>
