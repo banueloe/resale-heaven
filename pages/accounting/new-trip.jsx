@@ -101,7 +101,7 @@ const NewTrip = ({ loggedIn }) => {
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>
-                    <a target="_blank" href={location.url}>
+                    <a target="_blank" rel="noreferrer" href={location.url}>
                       {location.name}
                     </a>
                   </TableCell>

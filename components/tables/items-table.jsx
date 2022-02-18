@@ -26,7 +26,11 @@ const ItemsTable = ({ items }) => {
               <TableCell align="left" component="th" scope="row">
                 <img src={item.galleryURL} />
               </TableCell>
-              <TableCell align="left"><a href={item.viewItemURL[0]}>{item.title}</a></TableCell>
+              <TableCell align="left">
+                <a target="_blank" rel="noreferrer" href={item.viewItemURL[0]}>
+                  {item.title}
+                </a>
+              </TableCell>
               <TableCell align="right">
                 {formatMoney(getPriceWithShipping(item))}
               </TableCell>
