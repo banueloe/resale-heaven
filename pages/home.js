@@ -21,10 +21,6 @@ export const getServerSideProps = withIronSessionSsr(
 );
 
 const Home = ({ loggedIn }) => {
-  if (!loggedIn) {
-    return <AuthError />;
-  }
-
   useEffect(() => {
     fetch("/api/auth/paypal-token", {
       method: "GET",
@@ -40,6 +36,10 @@ const Home = ({ loggedIn }) => {
         console.log(data);
       });
   }, []);
+
+  if (!loggedIn) {
+    return <AuthError />;
+  }
 
   return (
     <>
