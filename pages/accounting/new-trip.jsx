@@ -41,13 +41,19 @@ const NewTrip = ({ loggedIn }) => {
     else if (locations.length < 2)
       setError("At least two locations are required.");
     else {
-      const placeIds = locations.map((location) => location.place_id);
       let tripDate = new Date(date).setHours(12);
       tripDate = new Date(tripDate).setMinutes(0, 0);
       tripDate = format(tripDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
       fetch("/api/accounting/new-trip", {
         method: "POST",
-        body: { tripDate: tripDate, placeIds: placeIds },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: tripDate,
+          placeIds: locations.map((location) => location.place_id),
+          placeNames: locations.map((location) => location.name),
+        }),
       })
         .then((res) => {
           if (res.ok) {

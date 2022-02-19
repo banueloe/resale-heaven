@@ -30,6 +30,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
         email: email,
         password: hashedPassword,
         inventoryLocations: [],
+        expenses: [],
       });
     } else {
       const isValid = await verifyPassword(password, existingUser.password);
