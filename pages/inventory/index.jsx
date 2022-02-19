@@ -24,7 +24,7 @@ export const getServerSideProps = withIronSessionSsr(
       const collection = db.collection("users");
       inventoryLocations = await collection.findOne(
         { email: req.session.user.email },
-        { projection: { password: false, email: false } }
+        { projection: { password: false, email: false, expenses: false } }
       );
       inventoryLocations = inventoryLocations.inventoryLocations;
     } catch (e) {
