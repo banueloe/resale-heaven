@@ -65,7 +65,7 @@ export const getServerSideProps = withIronSessionSsr(
 
 const Accounting = ({ loggedIn, userExpenses }) => {
   const [sales, setSales] = useState();
-  const [expenses, setExpenses] = useState(userExpenses);
+  const [expenses, setExpenses] = useState();
   const [dateRange, setDateRange] = useState([null, null]);
   const [error, setError] = useState();
 
