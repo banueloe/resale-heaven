@@ -14,33 +14,20 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
     await ebayAuthToken
       .exchangeCodeForAccessToken("PRODUCTION", req.query.code)
       .then(async (data) => {
-        let dataObject = JSON.parse(data);
-        await axios
-          .post(
-            "https://api-m.paypal.com/v1/oauth2/token",
-            "grant_type=client_credentials",
-            {
-              auth: {
-                username: process.env.PAYPAL_CLIENT_ID,
-                password: process.env.PAYPAL_SECRET,
-              },
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-            }
-          )
-          .then(async (paypalData) => {
-            console.log(paypalData, "paypalData")
-            console.log(data, "Data")
-            req.session.user = {
-              ...req.session.user,
-              paypal_token: paypalData.data.access_token,
-              token: dataObject.access_token,
-            };
-            await req.session.save().then(() => {
-              res.redirect("/home");
-            });
+        let dataObject = JSON.parse(data); //Todo use refresh token
+        if (dataObject.access_token) {
+          //get auth token then:
+          req.session.user = {
+            ...req.session.user,
+            token: dataObject.access_token,
+          };
+          await req.session.save().then(() => {
+            res.redirect("/home");
           });
+        } else {
+          console.log(`Error: ${data}`);
+          res.redirect("/");
+        }
       })
       .catch((error) => {
         console.log(`Error getting Access token :${JSON.stringify(error)}`);
