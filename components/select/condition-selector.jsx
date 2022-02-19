@@ -1,4 +1,5 @@
 import { Grid, Select, FormControl, MenuItem, InputLabel } from "@mui/material";
+import conditionOptions from "../../lib/conditionOptions";
 
 const ConditionSelector = ({ condition, onChange }) => {
   return (
@@ -11,9 +12,11 @@ const ConditionSelector = ({ condition, onChange }) => {
           label="Condition"
           onChange={onChange}
         >
-          <MenuItem value={"NEW"}>Brand New</MenuItem>
-          <MenuItem value={"NEW_OTHER"}>New Other - New Without Tags</MenuItem>
-          <MenuItem value={"USED_EXCELLENT"}>Used </MenuItem>
+          {conditionOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Grid>
