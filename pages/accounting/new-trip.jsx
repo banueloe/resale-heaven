@@ -82,7 +82,10 @@ const NewTrip = ({ loggedIn }) => {
       <Grid item>
         <Typography variant="subtitle1">
           Add mileage from a business trip to your expenses data by entering the
-          date and stops along the trip, one location at a time.
+          date and stops along the trip, one location at a time. The total
+          distance will be calculated and multiplied by the IRS Standard Mileage
+          Rate ($.585/mile in 2022) to calculate the corresponding tax
+          deduction.
         </Typography>
       </Grid>
       <Grid item mt={4}>

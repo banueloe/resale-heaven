@@ -4,6 +4,11 @@ import clientPromise from "../../../lib/mongodb";
 import { v4 as uuidv4 } from "uuid";
 const axios = require("axios");
 
+const STANDARD_MILEAGE_RATE = .585; //2022 Standard Mileage Rate
+function getMiles(i) {
+    return i*0.000621371192;
+}
+
 export default withIronSessionApiRoute(async function handler(req, res) {
   if (!req.method === "POST") {
     res.status(405).json({ error: "This endpoint only accepts POST requests" });
@@ -32,7 +37,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       const tripLegs = response.data.routes[0].legs;
       let distance = 0;
       tripLegs.forEach((leg) => (distance += leg.distance.value));
-
+      const miles = getMiles(distance);
+      
       const client = await clientPromise;
       const db = client.db();
       const collection = db.collection("users");
@@ -47,6 +53,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
               placeIds: placeIds,
               placeNames: placeNames,
               distance: distance,
+              miles: miles,
+              amount: miles * STANDARD_MILEAGE_RATE
             },
           },
         }
