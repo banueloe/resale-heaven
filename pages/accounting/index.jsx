@@ -4,6 +4,7 @@ import format from "date-fns/format";
 import {
   fetchEbayTransactions,
   fetchShippingCosts,
+  fetchUserInputTransactions,
 } from "../../lib/transaction-functions";
 import { Grid } from "@mui/material";
 import AccountingCard from "../../components/accounting-card";
@@ -40,7 +41,6 @@ export const getServerSideProps = withIronSessionSsr(
     expenses = expenses.expenses.map((expense) => {
       let description = "Trip: ";
       expense.placeNames.forEach((name) => (description += `${name}->`));
-      console.log(expense);
       return {
         transactionId: expense.id,
         date: expense.date,
@@ -87,6 +87,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       let endDate = new Date(dateRange[1]).setHours(23);
       endDate = new Date(endDate).setMinutes(59, 59);
       endDate = format(endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+      fetchUserInputTransactions(startDate, endDate, userExpenses, setExpenses);
       fetchEbayTransactions(startDate, endDate, setSales, setExpenses);
       fetchShippingCosts(startDate, endDate, setExpenses);
     }
