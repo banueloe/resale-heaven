@@ -4,6 +4,7 @@ import BookSale from "../public/booksale.jpg";
 import Money from "../public/money.jpg";
 import Warehouse from "../public/warehouse.jpg";
 import AuthError from "../components/auth-error";
+import { useEffect } from "react";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
@@ -23,6 +24,22 @@ const Home = ({ loggedIn }) => {
   if (!loggedIn) {
     return <AuthError />;
   }
+
+  useEffect(() => {
+    fetch("/api/auth/paypal-token", {
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.text();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }, []);
 
   return (
     <>
