@@ -38,7 +38,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       let distance = 0;
       tripLegs.forEach((leg) => (distance += leg.distance.value));
       const miles = getMiles(distance);
-      
+
       const client = await clientPromise;
       const db = client.db();
       const collection = db.collection("users");
@@ -54,7 +54,8 @@ export default withIronSessionApiRoute(async function handler(req, res) {
               placeNames: placeNames,
               distance: distance,
               miles: miles,
-              amount: miles * STANDARD_MILEAGE_RATE
+              amount: miles * STANDARD_MILEAGE_RATE,
+              category: "Mileage Deduction"
             },
           },
         }
