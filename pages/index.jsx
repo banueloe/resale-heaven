@@ -91,6 +91,7 @@ export default function LandingPage({ authLink }) {
             sx={{ input: { background: "white" }, width: "45ch" }}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            type="password"
             label="Password"
           />
         </Grid>
