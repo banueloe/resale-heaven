@@ -30,6 +30,8 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
             }
           )
           .then(async (paypalData) => {
+            console.log(paypalData, "paypalData")
+            console.log(data, "Data")
             req.session.user = {
               ...req.session.user,
               paypal_token: paypalData.data.access_token,
