@@ -29,21 +29,7 @@ const Accounting = ({ loggedIn }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [error, setError] = useState();
 
-  useEffect(() => {
-    fetch("/api/auth/paypal-token", {
-      method: "GET",
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.text();
-        }
-      })
-      .then((data) => {
-        console.log(data, "data");
-      });
-  }, []);
+
 
   const fetchTransactions = (event) => {
     event.preventDefault();
