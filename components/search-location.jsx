@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TextField, Typography, Grid } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 
 let autoComplete;
 
@@ -45,7 +45,6 @@ async function handlePlaceSelect(updateQuery, setLocations) {
     return tempLocations;
   });
   updateQuery("");
-  console.log(addressObject);
 }
 
 function SearchLocationInput({ setLocations }) {
