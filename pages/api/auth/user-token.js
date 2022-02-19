@@ -35,10 +35,10 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
               paypal_token: paypalData.data.access_token,
               token: dataObject.access_token,
             };
+            await req.session.save().then(() => {
+              res.redirect("/home");
+            });
           });
-        await req.session.save().then(() => {
-          res.redirect("/home");
-        });
       })
       .catch((error) => {
         console.log(`Error getting Access token :${JSON.stringify(error)}`);
