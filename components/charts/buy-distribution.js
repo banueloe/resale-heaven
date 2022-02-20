@@ -8,13 +8,15 @@ import {
 } from "recharts";
 import { formatMoney } from "../../lib/helpers";
 
+const NUM_RANGES = 6; 
+
 const getData = (sortedItems) => {
   const numItems = sortedItems.length;
-  const rangeSize = sortedItems[numItems - 1] / 6;
+  const rangeSize = sortedItems[numItems - 1] / NUM_RANGES;
   let data = [];
 
   let itemsIndex = 0;
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < NUM_RANGES; i++) {
     let count = 0;
 
     while (
