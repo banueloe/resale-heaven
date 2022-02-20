@@ -16,8 +16,10 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       return resolve();
     }
 
-    if(!req.query.start || !req.query.end){
-      res.status(400).json({ error: "Error: Missing start or end date in request." });
+    if (!req.query.start || !req.query.end) {
+      res
+        .status(400)
+        .json({ error: "Error: Missing start or end date in request." });
       return resolve();
     }
     axios
@@ -32,71 +34,62 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         }
       )
       .then((response) => {
-        // todo clean up code
+        let sales = [];
+        let expenses = [];
 
-        let adFees = response.data.transactions.filter(transaction => transaction.transactionType === "NON_SALE_CHARGE");
-        adFees = adFees.map((transaction) => {
-          console.log(transaction.references[1]);
-          return {
-            category: "Ad Fee",
+        response.data.transactions.forEach((transaction) => {
+          let sale = null;
+          let expense = null;
+          let defaultTransaction = {
+            category: transaction.transactionType,
             source: "eBay",
-            description: transaction.feeType,
+            transactionId: transaction.transactionId,
             amount: +transaction.amount.value,
-            orderId: transaction.references[1] ? transaction.references[1].referenceId: '',
-            transactionId: transaction.transactionId,
             date: transaction.transactionDate,
+            orderId: transaction.orderId ? transaction.orderId : "",
           };
-        });
-        let refunds = response.data.transactions.filter(transaction => transaction.transactionType === "REFUND");
-        refunds = refunds.map((transaction) => {
-          return {
-            category: "Refund",
-            source: "eBay",
-            description: `Refund for ${transaction.buyer.username}'s order #${transaction.orderId}`,
-            amount: +transaction.amount.value,
-            orderId: transaction.orderId,
-            transactionId: transaction.transactionId,
-            date: transaction.transactionDate,
-          };
-        });
-
-        let shippingLabels = response.data.transactions.filter(transaction => transaction.transactionType === "SHIPPING_LABEL");
-        shippingLabels = shippingLabels.map((transaction) => {
-          return {
-            category: "Postpaid Shipping",
-            source: "eBay",
-            description: transaction.transactionMemo,
-            amount: +transaction.amount.value,
-            orderId: '',
-            transactionId: transaction.transactionId,
-            date: transaction.transactionDate,
-          };
-        });
-        let orders = response.data.transactions.filter(transaction => transaction.transactionType === "SALE");
-        const sales = orders.map((transaction) => {
-          return {
-            category: "Sale",
-            source: "eBay",
-            description: `Sale to ${transaction.buyer.username}`,
-            amount: +transaction.totalFeeBasisAmount.value,
-            orderId: transaction.orderId,
-            transactionId: transaction.transactionId,
-            date: transaction.transactionDate,
-          };
-        });
-        const fees = orders.map((transaction) => {
-          return {
-            category: "eBay Sale Fees",
-            source: "eBay",
-            description: `Fees for sale to ${transaction.buyer.username}`,
-            amount: +transaction.totalFeeAmount.value,
-            orderId: transaction.orderId,
-            transactionId: transaction.transactionId,
-            date: transaction.transactionDate,
-          };
+          switch (transaction.transactionType) {
+            case "NON_SALE_CHARGE":
+              expense = {
+                ...defaultTransaction,
+                category: "Ad Fee",
+                description: transaction.feeType,
+                orderId: transaction.references[1]
+                  ? transaction.references[1].referenceId
+                  : "",
+              };
+              break;
+            case "REFUND":
+              expense = {
+                ...defaultTransaction,
+                description: `Refund for ${transaction.buyer.username}'s order #${transaction.orderId}`,
+              };
+              break;
+            case "SHIPPING_LABEL":
+              expense = {
+                ...defaultTransaction,
+                description: transaction.transactionMemo,
+              };
+              break;
+            case "SALE":
+              sale = {
+                ...defaultTransaction,
+                description: `Sale to ${transaction.buyer.username}`,
+                amount: +transaction.totalFeeBasisAmount.value,
+              };
+              expense = {
+                ...defaultTransaction,
+                category: "eBay Sale Fees",
+                description: `Fees for sale to ${transaction.buyer.username}`,
+                amount: +transaction.totalFeeAmount.value,
+              };
+              break;
+          }
+          if (expense) expenses.push(expense);
+          if (sale) sales.push(sale);
         });
 
-        res.status(200).json({ sales: sales, fees: [...adFees, ...shippingLabels, ...fees, ...refunds] });
+        res.status(200).json({ sales: sales, expenses: expenses });
         return resolve();
       })
       .catch((error) => {
