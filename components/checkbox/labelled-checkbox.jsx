@@ -11,8 +11,8 @@ const LabelledCheckbox = ({ label, category, setCategory, options }) => {
     <FormControl component="fieldset">
       <FormLabel component="legend">{label}</FormLabel>
       <RadioGroup
-        aria-label="condition"
-        name="condition-radio-buttons-group"
+        aria-label="labelledCheckbox"
+        name="labelledCheckbox"
         value={category}
         onChange={(event) => {
           setCategory(event.target.value);
