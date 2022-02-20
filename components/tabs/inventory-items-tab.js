@@ -5,17 +5,54 @@ import { useState } from "react";
 import conditionOptions from "../../lib/conditionOptions";
 
 const InventoryItemsTab = ({ inventoryItems, inventoryLocations }) => {
-  const [conditionFilter, setConditionFilter] = useState();
+  const [conditionFilter, setConditionFilter] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+
+  let brandOptions = [];
+  inventoryItems.forEach((item) => {
+    if (
+      item.product.brand &&
+      !brandOptions.some((option) => option.value === item.product.brand)
+    )
+      brandOptions.push({
+        value: item.product.brand,
+        label: item.product.brand,
+      });
+  });
+
+  const locationOptions = inventoryLocations.map((location) => {
+    return { value: location.name, label: location.name };
+  });
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={2} mt={4}>
+      <Grid item xs={2} mt={8}>
         <Grid item>
+          <Typography variant="h4">Filters</Typography>
+        </Grid>
+        <Grid item mt={2}>
           <LabelledCheckbox
             label="Condition"
             category={conditionFilter}
             setCategory={setConditionFilter}
             options={conditionOptions}
+          />
+        </Grid>
+        <Grid item mt={4}>
+          <LabelledCheckbox
+            label="Brand"
+            category={brandFilter}
+            setCategory={setBrandFilter}
+            options={brandOptions}
+          />
+        </Grid>
+        <Grid item mt={4}>
+          <LabelledCheckbox
+            label="Location"
+            category={locationFilter}
+            setCategory={setLocationFilter}
+            options={locationOptions}
           />
         </Grid>
       </Grid>
