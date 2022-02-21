@@ -68,6 +68,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
   const [expenses, setExpenses] = useState();
   const [dateRange, setDateRange] = useState([null, null]);
   const [error, setError] = useState();
+  const [displayForm, setDisplayForm] = useState(true);
 
   const fetchTransactions = (event) => {
     event.preventDefault();
@@ -90,6 +91,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       fetchUserInputTransactions(startDate, endDate, userExpenses, setExpenses);
       fetchEbayTransactions(startDate, endDate, setSales, setExpenses);
       fetchShippingCosts(startDate, endDate, setExpenses);
+      setDisplayForm(false);
     }
   };
 
@@ -103,6 +105,8 @@ const Accounting = ({ loggedIn, userExpenses }) => {
         dateRange={dateRange}
         setDateRange={setDateRange}
         fetchTransactions={fetchTransactions}
+        displayForm={displayForm}
+        setDisplayForm={setDisplayForm}
         error={error}
       />
       <Grid container>

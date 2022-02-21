@@ -1,12 +1,16 @@
 import { Grid, Button, Typography, Alert } from "@mui/material";
 import CalendarRangePicker from "../date/date-range-picker";
+import { useRouter } from "next/router";
 
 const AccountingForm = ({
   dateRange,
   setDateRange,
   fetchTransactions,
+  displayForm,
+  setDisplayForm,
   error,
 }) => {
+  const router = useRouter();
   return (
     <Grid
       container
@@ -34,22 +38,44 @@ const AccountingForm = ({
           calculate and click "View Data".`}
         </Typography>
       </Grid>
-      <Grid item>
-        <CalendarRangePicker
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-        />
-      </Grid>
-      {error && (
-        <Grid item>
-          <Alert severity="error">{error}</Alert>{" "}
+      {displayForm ? (
+        <>
+          <Grid item>
+            <CalendarRangePicker
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+            />
+          </Grid>
+          {error && (
+            <Grid item>
+              <Alert severity="error">{error}</Alert>
+            </Grid>
+          )}
+          <Grid item>
+            <Button variant="contained" onClick={fetchTransactions}>
+              View Data
+            </Button>
+          </Grid>
+        </>
+      ) : (
+        <Grid item mb={9}>
+          <Grid container>
+            <Grid item mr={2}>
+              <Button variant="outlined" onClick={() => router.push("/accounting/new-expense")}>
+                Log Expense
+              </Button>
+            </Grid>
+            <Grid item mr={2}>
+              <Button variant="outlined" onClick={() => router.push("/accounting/new-trip")}>
+                Log Trip
+              </Button>
+            </Grid>
+            <Button variant="contained" onClick={() => setDisplayForm(true)}>
+              Search a Different Range
+            </Button>
+          </Grid>
         </Grid>
       )}
-      <Grid item>
-        <Button variant="contained" onClick={fetchTransactions}>
-          View Data
-        </Button>
-      </Grid>
     </Grid>
   );
 };
