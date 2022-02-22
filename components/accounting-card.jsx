@@ -4,6 +4,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import BasicPie from "./charts/pie-chart";
 import { Grid, Typography, Card } from "@mui/material";
 import TabsWrapper from "../components/tabs/tabs-wrapper";
 import { useState } from "react";
@@ -12,7 +13,24 @@ import { formatMoney } from "../lib/helpers";
 const AccountingCard = ({ title, data }) => {
   const [tab, setTab] = useState(0);
   let total = 0;
-  data.forEach((transaction) => (total += transaction.amount));
+
+  const pieData = [
+    { name: "eBay Sale Fees", value: 0 },
+    { name: "Shipping", value: 0 },
+    { name: "Ad Fee", value: 0 },
+    { name: "Mileage Deduction", value: 0 },
+    { name: "SALE", value: 0 },
+    { name: "REFUND", value: 0 },
+    { name: "NON_SALE_CHARGE", value: 0 },
+    { name: "SHIPPING_LABEL", value: 0 },
+  ];
+
+  data.forEach((transaction) => {
+    total += transaction.amount;
+    let index = pieData.findIndex(category => category.name === transaction.category);
+    pieData[index].value++;
+  });
+
 
   return (
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
@@ -29,7 +47,12 @@ const AccountingCard = ({ title, data }) => {
         value={tab}
         setValue={setTab}
       />
-      {tab === 0 && <div>Total = {formatMoney(total)}</div>}
+      {tab === 0 && (
+        <Grid item>
+          <div className="margin-16">Total = {formatMoney(total)}</div>
+          <BasicPie data={pieData} />
+        </Grid>
+      )}
       {tab === 1 && (
         <TableContainer>
           <Table>

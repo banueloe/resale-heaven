@@ -61,3 +61,7 @@
 .search-location-input input:focus {
   outline: none;
 }
+
+.margin-16 {
+  margin: 16px;
+}
