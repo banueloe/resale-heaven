@@ -127,7 +127,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
         <Grid item xs={1} />
       </Grid>
       <Grid item sx={{ position: "absolute", bottom: "3%" }}>
-        {csvData && <CSVLink data={csvData}>Export Transactions</CSVLink>}
+        {csvData !== 0 && <CSVLink data={csvData}>Export Transactions</CSVLink>}
       </Grid>
     </Grid>
   );
