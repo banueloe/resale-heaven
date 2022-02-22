@@ -29,7 +29,7 @@ const Buy = () => {
         <h1 className="title">How much is this item worth?</h1>
         <h3>
           Use this page to determine whether or not you should buy an item to
-          resale. Remember, the prices shown below are current or historical
+          resell. Remember, the prices shown below are current or historical
           listings and are not guaranteed to remain the same in the future.
         </h3>
       </Grid>
