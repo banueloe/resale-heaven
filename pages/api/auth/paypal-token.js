@@ -26,7 +26,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
           ...req.session.user,
           paypal_token: data.data.access_token,
         };
-        console.log(data.data.access_token, "log")
+        console.log(req.session.user, "log")
         await req.session.save().then(() => {
           res
             .status(200)
