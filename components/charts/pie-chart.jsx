@@ -1,6 +1,15 @@
-import { PieChart, Pie, Tooltip } from "recharts";
+import { PieChart, Pie, Tooltip, Cell } from "recharts";
 
-export default function BasicPie({data}) {
+const COLORS = [
+  "#1769aa",
+  "#2196f3",
+  "#4dabf5",
+  "#2c387e",
+  "#3f51b5",
+  "#6573c3",
+];
+
+export default function BasicPie({ data }) {
   return (
     <PieChart width={1000} height={400}>
       <Pie
@@ -12,8 +21,12 @@ export default function BasicPie({data}) {
         outerRadius={80}
         fill="#8884d8"
         label
-      />
-      <Tooltip />
+      >
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip/>
     </PieChart>
   );
 }
