@@ -9,6 +9,7 @@ import {
 import { Grid } from "@mui/material";
 import AccountingCard from "../../components/accounting-card";
 import AccountingForm from "../../components/forms/accounting-form";
+import { CSVLink } from "react-csv";
 
 import clientPromise from "../../lib/mongodb";
 import { withIronSessionSsr } from "iron-session/next";
@@ -99,6 +100,11 @@ const Accounting = ({ loggedIn, userExpenses }) => {
     return <AuthError />;
   }
 
+  let csvData = [];
+  if (sales && expenses) csvData = [...expenses, ...sales];
+  else if (sales) csvData = sales;
+  else if (expenses) csvData = expenses;
+
   return (
     <Grid container spacing={2} justifyContent="center">
       <AccountingForm
@@ -119,6 +125,9 @@ const Accounting = ({ loggedIn, userExpenses }) => {
           {expenses && <AccountingCard title="Expenses" data={expenses} />}
         </Grid>
         <Grid item xs={1} />
+      </Grid>
+      <Grid item sx={{ position: "absolute", bottom: "3%" }}>
+        {csvData && <CSVLink data={csvData}>Export Transactions</CSVLink>}
       </Grid>
     </Grid>
   );
