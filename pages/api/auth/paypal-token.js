@@ -3,9 +3,6 @@ import { sessionOptions } from "../../../lib/session";
 const axios = require("axios");
 
 export default withIronSessionApiRoute(async function loginRoute(req, res) {
-  if (req.method !== "GET")
-    res.status(405).json({ error: "This endpoint only accepts GET requests" });
-
   if (!req.session.user || !req.session.user.token || !req.session.user.email)
     res.status(401).json({ error: "Unauthorized: User is not logged in" });
 

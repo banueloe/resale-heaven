@@ -23,7 +23,7 @@ export const getServerSideProps = withIronSessionSsr(
 const Home = ({ loggedIn }) => {
   useEffect(() => {
     fetch("/api/auth/paypal-token", {
-      method: "GET",
+      method: "POST",
     })
       .then((res) => {
         if (res.ok) {
