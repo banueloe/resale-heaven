@@ -55,7 +55,7 @@ const Home = ({ loggedIn }) => {
           <MediaCard
             title="Buy"
             link="/buy"
-            description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
+            description="Sourcing guidance: use this page to determine whether or not you should buy an item to resale."
             image={BookSale}
           />
         </Grid>
@@ -64,7 +64,7 @@ const Home = ({ loggedIn }) => {
           <MediaCard
             title="Inventory Management"
             link="/inventory"
-            description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
+            description="Manage your eCommerce Business Inventory in one place."
             image={Warehouse}
           />
         </Grid>
@@ -73,7 +73,7 @@ const Home = ({ loggedIn }) => {
           <MediaCard
             title="Accounting"
             link="/accounting"
-            description="test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsum test lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsumtest lorem ipsum"
+            description="View your past eBay and PayPal transactions to calculate revenue, expenses and estimate profit."
             image={Money}
           />
         </Grid>
