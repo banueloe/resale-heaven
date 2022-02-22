@@ -39,7 +39,7 @@ export const getServerSideProps = withIronSessionSsr(
     inventoryLocations.forEach((location) => {
       location.inventoryItems.forEach((item) => {
         const found = currentItems.find((i) => i.sku === item);
-        found.location = location.name;
+        if (found) found.location = location.name;
       });
     });
 
