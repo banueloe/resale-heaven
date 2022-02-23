@@ -30,8 +30,8 @@ export default function Header() {
           </Typography>
           {path != "/" &&
             pages.map((page) => (
-              <Link href={page.href}>
-                <Button key={page.label} sx={{ color: "white" }} onClick>
+              <Link key={page.label} href={page.href}>
+                <Button sx={{ color: "white" }} onClick>
                   {page.label}
                 </Button>
               </Link>
