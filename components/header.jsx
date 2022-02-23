@@ -5,29 +5,37 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Header() {
   const router = useRouter();
   const path = router.pathname;
-  const pages = ["Buy", "Inventory", "Accounting"];
+  const pages = [
+    { label: "Buy", href: "/buy" },
+    { label: "Inventory", href: "/inventory" },
+    { label: "Accounting", href: "/accounting" },
+  ];
+
   return (
-    <Box sx={{ flexGrow: 1, margin: 0, height: "100%" }}>
+    <Box sx={{ margin: 0, height: "100%" }}>
       <AppBar>
         <Toolbar>
           <Typography
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/home")}
             variant="h6"
             component="div"
-            sx={{ cursor: "pointer", flexGrow: 1 }}
+            sx={{ cursor: "pointer", mr: 4 }}
           >
             Resale Heaven
           </Typography>
-
-          {/* {pages.map((page) => (
-            <Button key={page} sx={{ my: 2, color: "white", display: "block" }}>
-              {page}
-            </Button>
-          ))} */}
+          {path != "/" &&
+            pages.map((page) => (
+              <Link href={page.href}>
+                <Button key={page.label} sx={{ color: "white" }} onClick>
+                  {page.label}
+                </Button>
+              </Link>
+            ))}
         </Toolbar>
       </AppBar>
     </Box>
