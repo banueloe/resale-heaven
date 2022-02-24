@@ -28,7 +28,7 @@ const AccountingCard = ({ title, data }) => {
   data.forEach((transaction) => {
     total += transaction.amount;
     let index = pieData.findIndex(category => category.name === transaction.category);
-    pieData[index].value+=transaction.amount;
+    pieData[index].value+= (Math.round(transaction.amount * 100) / 100).toFixed(2);
   });
 
 
