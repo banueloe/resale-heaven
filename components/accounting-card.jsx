@@ -23,14 +23,18 @@ const AccountingCard = ({ title, data }) => {
     { name: "REFUND", value: 0 },
     { name: "NON_SALE_CHARGE", value: 0 },
     { name: "SHIPPING_LABEL", value: 0 },
+    { name: "Miscellaneous Expense", value: 0 },
   ];
 
   data.forEach((transaction) => {
     total += transaction.amount;
-    let index = pieData.findIndex(category => category.name === transaction.category);
-    pieData[index].value+= (Math.round(transaction.amount * 100) / 100).toFixed(2);
+    let index = pieData.findIndex(
+      (category) => category.name === transaction.category
+    );
+    pieData[index].value += (
+      Math.round(transaction.amount * 100) / 100
+    ).toFixed(2);
   });
-
 
   return (
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
