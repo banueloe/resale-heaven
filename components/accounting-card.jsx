@@ -36,7 +36,8 @@ const AccountingCard = ({ title, data }) => {
     ).toFixed(2);
   });
 
-  return (
+  console.log(pieData);
+  return ( 
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
       <Grid container justifyContent="center">
         <Typography mt={4} mb={2} variant="h3">
