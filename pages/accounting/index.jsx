@@ -44,7 +44,7 @@ export const getServerSideProps = withIronSessionSsr(
         let description = "Trip: ";
         expense.placeNames.forEach((name) => (description += `${name}->`));
         return {
-          transactionId: expense.id,
+          transactionId: expense.transactionId,
           date: expense.date,
           description: description.slice(0, -2),
           category: expense.category,

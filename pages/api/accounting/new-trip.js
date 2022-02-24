@@ -48,7 +48,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
         {
           $push: {
             expenses: {
-              id: uuidv4(),
+              transactionId: uuidv4(),
               date: req.body.date,
               placeIds: placeIds,
               placeNames: placeNames,
