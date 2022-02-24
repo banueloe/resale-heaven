@@ -31,12 +31,9 @@ const AccountingCard = ({ title, data }) => {
     let index = pieData.findIndex(
       (category) => category.name === transaction.category
     );
-    pieData[index].value += (
-      Math.round(transaction.amount * 100) / 100
-    ).toFixed(2);
+    pieData[index].value += transaction.amount;
   });
 
-  console.log(pieData);
   return ( 
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
       <Grid container justifyContent="center">
