@@ -40,16 +40,20 @@ export const getServerSideProps = withIronSessionSsr(
     }
 
     expenses = expenses.expenses.map((expense) => {
-      let description = "Trip: ";
-      expense.placeNames.forEach((name) => (description += `${name}->`));
-      return {
-        transactionId: expense.id,
-        date: expense.date,
-        description: description.slice(0, -2),
-        category: expense.category,
-        amount: expense.amount,
-        source: "User Input",
-      };
+      if (expense.category === "Mileage Deduction") {
+        let description = "Trip: ";
+        expense.placeNames.forEach((name) => (description += `${name}->`));
+        return {
+          transactionId: expense.id,
+          date: expense.date,
+          description: description.slice(0, -2),
+          category: expense.category,
+          amount: expense.amount,
+          source: "User Input",
+        };
+      } else {
+        return { ...expense, source: "User Input" };
+      }
     });
     return {
       props: {
@@ -128,9 +132,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       </Grid>
       <Grid item sx={{ position: "absolute", bottom: "3%" }}>
         {csvData.length !== 0 && (
-          <CSVLink data={csvData}>
-            Export Transactions
-          </CSVLink>
+          <CSVLink data={csvData}>Export Transactions</CSVLink>
         )}
       </Grid>
     </Grid>

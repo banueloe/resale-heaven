@@ -2,6 +2,7 @@ import { Grid, Typography, TextField, Button, Alert } from "@mui/material";
 import { useState } from "react";
 import AuthError from "../../components/auth-error";
 import BasicDatePicker from "../../components/date/date-picker";
+import { useRouter } from "next/router";
 
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
@@ -25,27 +26,34 @@ const NewExpense = ({ loggedIn }) => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [date, setDate] = useState(null);
+  const router = useRouter();
 
-  const handleSubmit = (event) => {//TODO FINISH THIS
-    // event.preventDefault();
-    // if (!name) {
-    //   setError(`Error: The "Location Name" field is required.`);
-    // } else {
-    //   fetch("/api/accounting/new-expense", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       name: name,
-    //       description: description,
-    //     }),
-    //   })
-    //     .then((res) => {})
-    //     .then((error) => {
-    //       setError(error);
-    //     });
-    // }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!date || !amount || !description) setError("All fields are required.");
+    else {
+      fetch("/api/accounting/new-expense", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: amount,
+          description: description,
+          date: date,
+        }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            router.push("/accounting");
+          } else {
+            return res.text();
+          }
+        })
+        .then((error) => {
+          setError(error);
+        });
+    }
   };
 
   if (!loggedIn) {
