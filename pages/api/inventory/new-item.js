@@ -42,7 +42,11 @@ const postNewItem = async (fields, images, token, res, resolve) => {
     })
     .catch(function (error) {
       console.log(error.response.data);
-      res.status(400).json({ error: `Error creating item. Try again or contact app administrator.`});
+      res
+        .status(400)
+        .json({
+          error: `Error creating item. Try again or contact app administrator.`,
+        });
       return resolve();
     });
 };
@@ -78,37 +82,41 @@ export default withIronSessionApiRoute(async function handler(req, res) {
       return resolve();
     }
 
-    let images = Array.isArray(data.files.image) ? data.files.image: new Array(data.files.image);
+    let images = Array.isArray(data.files.image)? data.files.image: new Array(data.files.image);
 
-    if (!images[0] || !data.fields.name || !data.fields.brand || !data.fields.description || !data.fields.quantity || !data.fields.condition) {
-      res.status(400).json({ error: "Missing fields. Remember that only SKU is optional." });
+    if (!images[0] || !data.fields.name || !data.fields.brand || !data.fields.description ||!data.fields.quantity ||!data.fields.condition) {
+      res
+        .status(400)
+        .json({ error: "Missing fields. Remember that only SKU is optional." });
       return resolve();
     }
 
-    if (images[0]) {
-      let promises = images.map(
-        (file) =>
-          new Promise((resolve, reject) => {
-            cloudinary.uploader.upload(
-              file.filepath,
-              { resource_type: "image" },
-              (error, result) => {
-                if (error) reject(error);
-                else resolve(result.secure_url);
-              }
-            );
-          })
-      );
-      Promise.all(promises)
-        .then((imageLinks) =>
-          postNewItem(data.fields, imageLinks, req.session.user.token, res, resolve)
+    let promises = images.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(
+            file.filepath,
+            { resource_type: "image" },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result.secure_url);
+            }
+          );
+        })
+    );
+    Promise.all(promises)
+      .then((imageLinks) =>
+        postNewItem(
+          data.fields,
+          imageLinks,
+          req.session.user.token,
+          res,
+          resolve
         )
-        .catch(() => {
-          res.status(400).json({ message: "Error saving images" });
-          return resolve();
-        });
-    } else {
-      postNewItem(data.fields, [], req.session.user.token, res);
-    }
+      )
+      .catch(() => {
+        res.status(400).json({ message: "Error saving images" });
+        return resolve();
+      });
   });
 }, sessionOptions);
