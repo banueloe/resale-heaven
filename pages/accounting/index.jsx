@@ -48,7 +48,7 @@ export const getServerSideProps = withIronSessionSsr(
           date: expense.date,
           description: description.slice(0, -2),
           category: expense.category,
-          amount: +expense.amount,
+          amount: expense.amount,
           source: "User Input",
         };
       } else {
