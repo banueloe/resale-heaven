@@ -34,7 +34,7 @@ const AccountingCard = ({ title, data }) => {
     pieData[index].value += transaction.amount;
   });
 
-  pieData.forEach((slice) => (slice = formatMoney(slice)));
+  pieData.forEach((slice) => (slice.value = formatMoney(slice)));
 
   return (
     <Card variant="outlined" ml={8} sx={{ backgroundColor: "#eeeee4" }}>
