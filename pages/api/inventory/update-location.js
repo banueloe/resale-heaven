@@ -7,7 +7,7 @@ export default withIronSessionApiRoute(async function handler(req, res) {
     res.status(405).json({ error: "This endpoint only accepts POST requests" });
   }
   if (!req.body.location || !req.body.item) {
-    res.status(400).json({ error: "Missing Location name" });
+    res.status(400).json({ error: "Missing Location or item" });
   }
   if (!req.session.user.email) {
     res.status(401).json({ error: "Unauthorized" });
@@ -27,5 +27,5 @@ export default withIronSessionApiRoute(async function handler(req, res) {
   } catch (e) {
     res.status(400).json({ error: `Error w/ MongoDB request. ${e}` });
   }
-  res.status(200).json({ message: "Location created succesfully" });
+  res.status(200).json({ message: "Item succesfully associated with location"});
 }, sessionOptions);
