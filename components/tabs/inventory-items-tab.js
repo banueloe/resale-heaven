@@ -8,7 +8,7 @@ const InventoryItemsTab = ({ inventoryItems, inventoryLocations }) => {
   const [conditionFilter, setConditionFilter] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
-
+  //TODO implement filtering
   let brandOptions = [];
   inventoryItems.forEach((item) => {
     if (
