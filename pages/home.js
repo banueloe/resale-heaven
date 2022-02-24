@@ -43,14 +43,13 @@ const Home = ({ loggedIn }) => {
 
   return (
     <>
-      <Grid container>
+      <Grid container justifyContent="space-evenly">
         <Grid container alignItems="center" justify="center" direction="column">
           <Typography variant="h3" mt={8} mb={16}>
             What would you like to do today?
           </Typography>
         </Grid>
 
-        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Buy"
@@ -59,7 +58,6 @@ const Home = ({ loggedIn }) => {
             image={BookSale}
           />
         </Grid>
-        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Inventory Management"
@@ -68,7 +66,6 @@ const Home = ({ loggedIn }) => {
             image={Warehouse}
           />
         </Grid>
-        <Grid item xs={1} />
         <Grid item xs={3}>
           <MediaCard
             title="Accounting"
