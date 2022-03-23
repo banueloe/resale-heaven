@@ -1,10 +1,19 @@
-import { Grid, Button, Typography, Alert } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Typography,
+  Alert,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import CalendarRangePicker from "../date/date-range-picker";
 import { useRouter } from "next/router";
 
 const AccountingForm = ({
   dateRange,
   setDateRange,
+  external,
+  setExternal,
   fetchTransactions,
   displayForm,
   setDisplayForm,
@@ -35,8 +44,22 @@ const AccountingForm = ({
       <Grid item>
         <Typography variant="subtitle1">
           {`To get started, choose a start and end date for the data you want to
-          calculate and click "View Data".`}
+          calculate and click "View Data". If including external data, the date range must be no more than 31 days`}
         </Typography>
+      </Grid>
+      <Grid item mb={1}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={external}
+              onChange={(event) => {
+                setExternal(event.target.checked);
+              }}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          }
+          label="Include external data from my eBay and Paypal accounts"
+        />
       </Grid>
       {displayForm ? (
         <>
@@ -61,12 +84,18 @@ const AccountingForm = ({
         <Grid item mb={9}>
           <Grid container>
             <Grid item mr={2}>
-              <Button variant="outlined" onClick={() => router.push("/accounting/new-expense")}>
+              <Button
+                variant="outlined"
+                onClick={() => router.push("/accounting/new-expense")}
+              >
                 Log Expense
               </Button>
             </Grid>
             <Grid item mr={2}>
-              <Button variant="outlined" onClick={() => router.push("/accounting/new-trip")}>
+              <Button
+                variant="outlined"
+                onClick={() => router.push("/accounting/new-trip")}
+              >
                 Log Trip
               </Button>
             </Grid>

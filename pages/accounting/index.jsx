@@ -19,6 +19,11 @@ const MAX_DAYS = 2592000000;
 
 export const getServerSideProps = withIronSessionSsr(
   async function getServerSideProps({ req }) {
+    const user = req.session.user;
+    if (!user || !user.token || !user.email) {
+      return { props: { loggedIn: false } };
+    }
+
     let expenses;
     try {
       const client = await clientPromise;
@@ -36,7 +41,12 @@ export const getServerSideProps = withIronSessionSsr(
       );
     } catch (e) {
       console.error(e);
-      expenses = [];
+      return {
+        props: {
+          loggedIn: true,
+          userExpenses: [],
+        },
+      };
     }
 
     expenses = expenses.expenses.map((expense) => {
@@ -49,18 +59,15 @@ export const getServerSideProps = withIronSessionSsr(
           description: description.slice(0, -2),
           category: expense.category,
           amount: +expense.amount,
-          source: "User Input",
+          source: expense.distance,
         };
       } else {
-        return { ...expense, source: "User Input", amount: +expense.amount,};
+        return { ...expense, source: "User Input", amount: +expense.amount };
       }
     });
     return {
       props: {
-        loggedIn:
-          req.session.user && req.session.user.token && req.session.user.email
-            ? true
-            : false,
+        loggedIn: true,
         userExpenses: expenses,
       },
     };
@@ -71,6 +78,7 @@ export const getServerSideProps = withIronSessionSsr(
 const Accounting = ({ loggedIn, userExpenses }) => {
   const [sales, setSales] = useState();
   const [expenses, setExpenses] = useState();
+  const [external, setExternal] = useState(true);
   const [dateRange, setDateRange] = useState([null, null]);
   const [error, setError] = useState();
   const [displayForm, setDisplayForm] = useState(true);
@@ -83,7 +91,7 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       setError(
         `Error: Missing one or more dates. Remember, both date fields are required.`
       );
-    } else if (dateRange[1] - dateRange[0] > MAX_DAYS) {
+    } else if (dateRange[1] - dateRange[0] > MAX_DAYS && external) {
       setError(`Error: The date range must be no more than 31 days.`);
     } else {
       const startDate = format(
@@ -93,9 +101,11 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       let endDate = new Date(dateRange[1]).setHours(23);
       endDate = new Date(endDate).setMinutes(59, 59);
       endDate = format(endDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+      if (external) {
+        fetchEbayTransactions(startDate, endDate, setSales, setExpenses);
+        fetchShippingCosts(startDate, endDate, setExpenses);
+      }
       fetchUserInputTransactions(startDate, endDate, userExpenses, setExpenses);
-      fetchEbayTransactions(startDate, endDate, setSales, setExpenses);
-      fetchShippingCosts(startDate, endDate, setExpenses);
       setDisplayForm(false);
     }
   };
@@ -114,6 +124,8 @@ const Accounting = ({ loggedIn, userExpenses }) => {
       <AccountingForm
         dateRange={dateRange}
         setDateRange={setDateRange}
+        external={external}
+        setExternal={setExternal}
         fetchTransactions={fetchTransactions}
         displayForm={displayForm}
         setDisplayForm={setDisplayForm}
