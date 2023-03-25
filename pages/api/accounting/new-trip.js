@@ -4,7 +4,7 @@ import clientPromise from "../../../lib/mongodb";
 import { v4 as uuidv4 } from "uuid";
 const axios = require("axios");
 
-const STANDARD_MILEAGE_RATE = .585; //2022 Standard Mileage Rate
+const STANDARD_MILEAGE_RATE = .655; //2023 Standard Mileage Rate
 function getMiles(i) {
     return i*0.000621371192;
 }
